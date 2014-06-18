@@ -1,0 +1,30 @@
+doctype html
+html(lang="en", ng-app="MediaCenter")
+  head
+    title= title
+
+    // Viewport mobile tag for sensible mobile support
+    meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1,  user-scalable=no")
+
+    // Bring in the socket.io client
+    script(type="text/javascript", src="/js/dependencies/socket.io.js")
+
+    // then beef it up with some convenience logic for talking to Sails.js'
+    script(type="text/javascript", src="/js/dependencies/sails.io.js")
+
+    // Stylesheets
+    link(href='styles/importer.css', rel='stylesheet')
+
+    // Templates
+    script(type="text/ng-template", id="index"): include partials/index.jade
+    script(type="text/ng-template", id="sails"): include partials/sails.jade
+    script(type="text/ng-template", id="files"): include partials/files.jade
+
+    script(type="text/ng-template", id="directives/file"): include directives/file.jade
+
+
+  body
+    div(ng-view)
+
+    // browserfy
+    script(type="text/javascript", src="/main.js")

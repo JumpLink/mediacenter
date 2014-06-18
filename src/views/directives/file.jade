@@ -1,0 +1,36 @@
+.col-xs-12.col-sm-2.col-lg-1(ng-if="!isHidden()", ng-switch on="file.mediatype" class="{{file.mediatype}} {{file.subtype}}")
+  div(ng-switch-when="inode")
+    a(ng-href="{{getINodeLink()}}")
+      i.fa.fa-folder
+      |  {{file.name}}
+  div(ng-switch-when="video")
+    a
+      i.fa.fa-file-video-o
+      |  {{file.name}}
+  div(ng-switch-when="image")
+    a
+      i.fa.fa-file-image-o
+      |  {{file.name}}
+  div(ng-switch-when="text")
+    a
+      i.fa.fa-file-text-o
+      |  {{file.name}}
+  div(ng-switch-when="audio")
+    a
+      i.fa.fa-file-audio-o
+      |  {{file.name}}
+  div(ng-switch-when="application" ng-switch on="file.subtype")
+    //- bug in mmmagic? https://github.com/mscdex/mmmagic/issues/24
+    a(ng-switch-when="ogg") 
+      i.fa.fa-file-video-o
+      |  {{file.name}}
+    a(ng-switch-when="x-rar")
+      i.fa.fa-file-archive-o
+      |  {{file.name}}
+    a(ng-switch-default)
+      i.fa.fa-file-o
+      |  {{file.name}}
+  div(ng-switch-default)
+    a
+      i.fa.fa-file
+      |  {{file.name}}

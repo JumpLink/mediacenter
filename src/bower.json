@@ -1,0 +1,23 @@
+{
+  "name": "mediacenter",
+  "version": "0.0.0",
+  "authors": [
+    "Pascal Garber <pascal@jumplink.eu>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/third-party",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.3.*",
+    "socket.io-client": "~1.0.4",
+    "angular-sails": "~1.0.4",
+    "angular-route": "1.3.*",
+    "components-font-awesome": "~4.1.0"
+  }
+}
