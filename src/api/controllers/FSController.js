@@ -9,6 +9,7 @@ var fs = require("fs");
 var mmm = require('mmmagic');
 var Magic = mmm.Magic;
 
+var mime = require('mime'); // WORKAROUND for https://github.com/mscdex/mmmagic/issues/24
 
 module.exports = {
 	
@@ -47,6 +48,12 @@ module.exports = {
         return res.serverError(err);
       }
       else {
+        // WORKAROUND for https://github.com/mscdex/mmmagic/issues/24
+        switch (mime_type) {
+          case 'application/ogg':
+            mime_type = mime.lookup(filePath);
+          break;
+        }
         types = mime_type.split('/');
         if(types.length === 2)
           return res.json({mimetype: mime_type, mediatype: types[0], subtype: types[1]});

@@ -20,10 +20,6 @@
       i.fa.fa-file-audio-o
       |  {{file.name}}
   div(ng-switch-when="application" ng-switch on="file.subtype")
-    //- bug in mmmagic? https://github.com/mscdex/mmmagic/issues/24
-    a(ng-switch-when="ogg") 
-      i.fa.fa-file-video-o
-      |  {{file.name}}
     a(ng-switch-when="x-rar")
       i.fa.fa-file-archive-o
       |  {{file.name}}
