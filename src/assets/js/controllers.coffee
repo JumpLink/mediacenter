@@ -24,13 +24,13 @@ exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
     $scope.moment = moment()
   , 1000
 
-exports.FilesController = ($scope, $sails, $log, $routeParams, FilesService) ->
+exports.FilesController = ($scope, $sails, $log, FilesService) ->
 
   $sails.on 'message', (message) ->
     $log.debug '$sails.on'
     $log.debug message
 
-  currentPath = if angular.isDefined($routeParams.path) then $routeParams.path else '/'
+  currentPath = FilesService.getCurrentPath()
   $log.debug "/fs/readdir?id="+currentPath;
 
   $sails.get "/fs/readdir?id="+currentPath

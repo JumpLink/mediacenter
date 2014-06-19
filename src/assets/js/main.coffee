@@ -31,3 +31,4 @@ MediaCenter.controller('FilesController', controllers.FilesController)
 MediaCenter.controller('ServerController', controllers.ServerController)
 
 MediaCenter.directive('file', directives.file)
+MediaCenter.directive('videofile', directives.videofile)

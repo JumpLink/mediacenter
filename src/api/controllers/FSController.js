@@ -31,6 +31,23 @@ module.exports = {
     });
   }
 
+  , exists: function (req, res) {
+    var dirToRead = req.param('id') ? req.param('id') : req.param('path') ? req.param('path') : '/';
+    fs.exists(dirToRead, function (exists) {
+      return res.json({exists:exists});
+    });
+  }
+
+  , getJson: function (req, res) {
+    var path = req.param('id') ? req.param('id') : req.param('path') ? req.param('path') : '/';
+    fs.exists(path, function (exists) {
+      if(exists) return res.json(require(path));
+      else return res.serverError("Json not found");
+    });
+    
+    
+  }
+
   /**
    * `FilesController.detectFile()`
    */

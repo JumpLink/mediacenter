@@ -4,9 +4,7 @@
       i.fa.fa-folder
       |  {{file.name}}
   div(ng-switch-when="video")
-    a
-      i.fa.fa-file-video-o
-      |  {{file.name}}
+    videofile(data-file="file")
   div(ng-switch-when="image")
     a
       i.fa.fa-file-image-o
