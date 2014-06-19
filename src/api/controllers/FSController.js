@@ -18,7 +18,7 @@ module.exports = {
    * `FilesController.readdir()`
    */
   readdir: function (req, res) {
-    var dirToRead = req.param('id') ? req.param('id') : '/';
+    var dirToRead = req.param('id') ? req.param('id') : req.param('path') ? req.param('path') : '/';
     fs.exists(dirToRead, function (exists) {
       if(!exists) return res.serverError('path not found');
       else {
