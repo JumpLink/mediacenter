@@ -5,7 +5,7 @@ require '../third-party/angular-route/angular-route.js'
 require '../third-party/angular-sails/dist/angular-sails.js'
 # require '../third-party/qrcode-generator/js/qrcode.js' see script tag in index.jade
 require '../third-party/angular-qrcode/qrcode.js'
-require '../third-party/moment/moment.js'
+# require '../third-party/moment/moment.js' see script tag in index.jade
 require '../third-party/angular-moment/angular-moment.js'
 
 routes = require './routes.coffee'

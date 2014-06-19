@@ -24,10 +24,7 @@ module.exports = {
       if(!exists) return res.serverError('path not found');
       else {
         fs.readdir(dirToRead, function (err, files) {
-          if (err) {
-            sails.log.error(err);
-            return res.serverError(err);
-          }
+          if (err) return res.serverError(err);
           else return res.json({files:files});
         });
       }
@@ -43,10 +40,7 @@ module.exports = {
     var magic = new Magic(mmm.MAGIC_MIME_TYPE);
     sails.log.debug (filePath);
     magic.detectFile(filePath, function(err, mime_type) {
-      if (err) {
-        sails.log.error(err);
-        return res.serverError(err);
-      }
+      if (err) return res.serverError(err);
       else {
         // WORKAROUND for https://github.com/mscdex/mmmagic/issues/24
         switch (mime_type) {
@@ -55,10 +49,8 @@ module.exports = {
           break;
         }
         types = mime_type.split('/');
-        if(types.length === 2)
-          return res.json({mimetype: mime_type, mediatype: types[0], subtype: types[1]});
-        else
-          return res.serverError('Corrupt MIME-Type');
+        if(types.length === 2) return res.json({mimetype: mime_type, mediatype: types[0], subtype: types[1]});
+        else return res.serverError('Corrupt MIME-Type');
       }
     });
   }
