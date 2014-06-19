@@ -69,5 +69,52 @@ module.exports = {
     return res.ok();
   }
 
+  , next_subtitle: function (req, res) {
+    sails.log.debug("next_subtitle");
+    omx.next_subtitle();
+    return res.ok();
+  }
+
+  , previous_subtitle: function (req, res) {
+    sails.log.debug("previous_subtitle");
+    omx.previous_subtitle();
+    return res.ok();
+  }
+
+  , next_chapter: function (req, res) {
+    sails.log.debug("next_chapter");
+    omx.next_chapter();
+    return res.ok();
+  }
+
+  , previous_chapter: function (req, res) {
+    sails.log.debug("previous_chapter");
+    omx.previous_chapter();
+    return res.ok();
+  }
+
+  , next_audio: function (req, res) {
+    sails.log.debug("next_audio");
+    omx.next_audio();
+    return res.ok();
+  }
+
+  , previous_audio: function (req, res) {
+    sails.log.debug("previous_audio");
+    omx.previous_audio();
+    return res.ok();
+  }
+
+  , increase_speed: function (req, res) {
+    sails.log.debug("increase_speed");
+    omx.increase_speed();
+    return res.ok();
+  }
+
+  , decrease_speed: function (req, res) {
+    sails.log.debug("decrease_speed");
+    omx.decrease_speed();
+    return res.ok();
+  }
 };
 
