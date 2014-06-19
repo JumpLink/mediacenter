@@ -6,6 +6,9 @@ exports.routeProvider = ($routeProvider) ->
   .when "/sails",
     templateUrl: "sails"
     controller: "SailsController"
+  .when "/server",
+    templateUrl: "server"
+    controller: "ServerController"
   .when "/files",
     templateUrl: "files"
     controller: "FilesController"

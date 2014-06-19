@@ -4,6 +4,26 @@ exports.IndexController = ($scope) ->
 exports.SailsController = ($scope) ->
   $scope.test = 'test';
 
+exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
+  $sails.get "/os/ifaces"
+    .success (response) ->
+      $scope.addresses = {}
+      angular.forEach response, (dev, name) ->
+        if name != 'lo'
+          angular.forEach dev, (addressObject, index) ->
+            if addressObject.family == 'IPv4'
+              $scope.addresses[name] = addressObject
+
+    .error (response) ->
+      $log.error if response then angular.toJson response.error else "Can't read file dir "+currentPath
+
+  $scope.port = $location.port()
+
+  
+  $interval () ->
+    $scope.moment = moment()
+  , 1000
+
 exports.FilesController = ($scope, $sails, $log, $routeParams, FilesService) ->
 
   $sails.on 'message', (message) ->

@@ -18,6 +18,8 @@
     "socket.io-client": "~1.0.4",
     "angular-sails": "~1.0.4",
     "angular-route": "1.3.*",
-    "components-font-awesome": "~4.1.0"
+    "components-font-awesome": "~4.1.0",
+    "angular-qrcode": "monospaced/angular-qrcode#~3.1.0",
+    "angular-moment": "~0.7.1"
   }
 }

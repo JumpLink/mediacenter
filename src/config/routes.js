@@ -33,6 +33,13 @@ module.exports.routes = {
   '/files': {
     view: 'index'
   },
+  '/sails': {
+    view: 'index'
+  },
+  '/server': {
+    view: 'index'
+  },
+
 
   // Custom routes here...
 

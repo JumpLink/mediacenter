@@ -1,0 +1,9 @@
+.container-fluid
+  .row
+    .col-xs-12(ng-repeat="(name, address) in addresses")
+      .well.text-center
+        a(ng-href="http://{{address.address}}:{{port}}") http://{{address.address}}:{{port}}
+        br
+        br
+        qrcode(data="http://{{address.address}}:{{port}}")
+      span {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
