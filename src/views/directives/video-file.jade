@@ -1,4 +1,4 @@
-a
+a(ng-href="/info{{getPathQueryString()}}")
   i.fa.fa-file-video-o
   span(ng-switch on="file.metadata.type")
     span(ng-switch-when="episode")  {{file.metadata.tvShow.name}} - {{file.metadata.episode.name}}

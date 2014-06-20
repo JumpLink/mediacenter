@@ -8,10 +8,12 @@ require '../third-party/angular-qrcode/qrcode.js'
 # require '../third-party/moment/moment.js' see script tag in index.jade
 require '../third-party/angular-moment/angular-moment.js'
 
+
 routes = require './routes.coffee'
 controllers = require './controllers.coffee'
 directives = require './directives.coffee'
 services = require './services.coffee'
+filters = require './filters.coffee'
 
 MediaCenter = angular.module 'MediaCenter', [
   'ngSails'
@@ -20,16 +22,21 @@ MediaCenter = angular.module 'MediaCenter', [
   'angularMoment'
 ]
 
-MediaCenter.config(routes.routeProvider)
-MediaCenter.config(routes.locationProvider)
+MediaCenter.config routes.routeProvider
+MediaCenter.config routes.locationProvider 
 
-MediaCenter.service('FilesService', services.FilesService)
-MediaCenter.service('TVDBService', services.TVDBService)
+MediaCenter.service 'FilesService', services.FilesService
+MediaCenter.service 'TVDBService', services.TVDBService
+MediaCenter.service 'async', () ->
+  return require '../third-party/async/lib/async.js'
 
-MediaCenter.controller('IndexController', controllers.IndexController)
-MediaCenter.controller('SailsController', controllers.SailsController)
-MediaCenter.controller('FilesController', controllers.FilesController)
-MediaCenter.controller('ServerController', controllers.ServerController)
+MediaCenter.filter 'bytes', filters.bytes
 
-MediaCenter.directive('file', directives.file)
-MediaCenter.directive('videofile', directives.videofile)
+MediaCenter.controller 'IndexController', controllers.IndexController
+MediaCenter.controller 'SailsController', controllers.SailsController
+MediaCenter.controller 'FilesController', controllers.FilesController
+MediaCenter.controller 'ServerController', controllers.ServerController
+MediaCenter.controller 'FileInfoController', controllers.FileInfoController
+
+MediaCenter.directive 'file', directives.file
+MediaCenter.directive 'videofile', directives.videofile

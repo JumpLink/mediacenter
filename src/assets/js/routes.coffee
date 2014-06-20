@@ -12,6 +12,9 @@ exports.routeProvider = ($routeProvider) ->
   .when "/files",
     templateUrl: "files"
     controller: "FilesController"
+  .when "/info",
+    templateUrl: "info"
+    controller: "FileInfoController"
   .otherwise redirectTo: "/"
 
 exports.locationProvider = ($locationProvider) ->

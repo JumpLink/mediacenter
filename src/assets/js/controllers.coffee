@@ -4,9 +4,6 @@ exports.IndexController = ($scope) ->
 exports.SailsController = ($scope) ->
   $scope.test = 'test';
 
-exports.FileInfoController = ($scope) ->
-  $scope.test = 'test';
-
 exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
   $sails.get "/os/ifaces"
     .success (response) ->
@@ -27,6 +24,21 @@ exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
     $scope.moment = moment()
   , 1000
 
+exports.FileInfoController = ($rootScope, $scope, $log, FilesService, $routeParams) ->
+  # TODO optimieren erst zum schluss
+  loadFileFromRootScope = angular.isDefined($routeParams.global) == true
+  if loadFileFromRootScope
+    $scope.file = $rootScope.file
+  else
+    path = FilesService.getCurrentPath();
+    FilesService.getFile path, (error, file) ->
+      if error?
+        $log.error(error)
+      else
+        $scope.file = file
+        if file.path != path
+          $log.warn file.path+" != "+path
+
 exports.FilesController = ($scope, $sails, $log, FilesService) ->
 
   $sails.on 'message', (message) ->
@@ -34,15 +46,8 @@ exports.FilesController = ($scope, $sails, $log, FilesService) ->
     $log.debug message
 
   currentPath = FilesService.getCurrentPath()
-  $log.debug "/fs/readdir?id="+currentPath;
-
-  $sails.get "/fs/readdir?id="+currentPath
-    .success (response) ->
-      $log.debug response;
-      $scope.files = [];
-
-      angular.forEach response.files, (fileName, index) ->
-        $scope.files.push {name: fileName}
-
-    .error (response) ->
-      $log.error if response then angular.toJson response.error else "Can't read file dir "+currentPath
+  FilesService.getFileList currentPath, (error, files) ->
+    if angular.isDefined(error) and error != null
+      $log.error error
+    else
+      $scope.files = files

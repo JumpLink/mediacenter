@@ -1,0 +1,24 @@
+navbar
+.container-fluid
+  .row
+    .col-xs-12.col-lg-12
+      dl.dl-horizontal
+        dt Filename
+        dd {{file.name}}
+        dt Size
+        dd {{file.size | bytes}}
+        dt Changed
+        dd {{file.ctime | amCalendar}}
+        dt Modified
+        dd {{file.mtime | amCalendar}}
+        dt Accessed
+        dd {{file.atime | amCalendar}}
+        //- dt Path
+        //- dd {{file.path}}
+        dt Location
+        dd
+          a(ng-href="/files?path={{file.dirname}}") {{file.dirname}}
+        dt Mimetype
+        dd {{file.mimetype}}
+        dt Extension
+        dd {{file.extension}}

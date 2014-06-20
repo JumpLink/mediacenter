@@ -125,53 +125,58 @@ exports.TVDBService = ($log, $sails) ->
     getUpdates: getUpdates
   }
 
-exports.FilesService = ($log, $routeParams, $sails) ->
+exports.FilesService = ($log, $routeParams, $sails, async) ->
 
   getCurrentPath = () ->
     return if angular.isDefined($routeParams.path) then $routeParams.path else '/'
 
   # erzeugt anhand des Dateinamens und des aktuellen Verzeichnisses einen absoluten Pfad zu Datei
-  getAbsolutePath = (fileName) ->
-    path = getCurrentPath()
-    if path.charAt(path.length - 1) != '/' # if last char is '/' 
-      path += '/';
-    path += fileName
+  getAbsolutePath = (fileName, dirname) ->
+    # path = getCurrentPath()
+    if dirname.charAt(dirname.length - 1) != '/' # if last char is '/' 
+      dirname += '/';
+    path = dirname + fileName
     return path
 
-  getPathUrl = (path) ->
+  getPathQueryString = (path) ->
     return '?path=' + path
 
-  getINodeLink = (file) ->
-    link = if file.path then file.path else getAbsolutePath(file.name)
-    return getPathUrl(link)
-
-  extendFile = (fileName, cb) ->
-    file = {name: fileName}
-    file.path = getAbsolutePath(file.name);
-    $sails.get "/fs/detectFile"+getINodeLink(file)
+  getFile = (path, cb) ->
+    $sails.get "/fs/detectFile"+getPathQueryString(path)
       .success (response) ->
         if angular.isDefined response.error
-          cb(response.error, file)
+          cb(response.error)
         else
-          angular.extend(file, response);
-          $log.debug file;
-          cb(null, file)
+          $log.debug response;
+          cb(null, response)
       .error (response) ->
-        $log.error if response then angular.toJson response.error else "Can't detect file "+path+file
+        $log.error if response then angular.toJson response.error else "Can't detect file: "+path
         cb(response.error, null)
 
   isHidden = (file) ->
     return file.name.charAt(0) == '.'
 
   exists = (path, cb) ->
-    $sails.get "/fs/exists"+getPathUrl(path)
+    $sails.get "/fs/exists"+getPathQueryString(path)
       .success (response) ->
         cb(null, response.exists)
       .error (response) ->
         cb(response, null)
 
+  getFileList = (path, finalCallback) ->
+    # $log.debug "/fs/readdir?id="+path
+    $sails.get "/fs/readdir?id="+path
+      .success (response) ->
+        async.map response.files
+        , (fileName, callback) ->
+          callback null, {name: fileName}
+        , finalCallback
+      .error (response) ->
+        error = if response and response.error then response.error else "Can't read file dir "+path
+        finalCallback error
+
   getJson = (path, cb) ->
-    $sails.get "/fs/getJson"+getPathUrl(path)
+    $sails.get "/fs/getJson"+getPathQueryString(path)
       .success (response) ->
         if angular.isDefined response.error
           cb(response.error, {})
@@ -180,20 +185,19 @@ exports.FilesService = ($log, $routeParams, $sails) ->
       .error (response) ->
         cb(response, {})
 
-  getMetaDataJsonFileName = (file) ->
-    return "." + file.name + ".json"
+  getMetaDataJsonFileName = (fileName) ->
+    return "." + fileName + ".json"
 
-  getMetaDataJsonPath = (file) ->
-    fileName = getMetaDataJsonFileName file
-    path = getAbsolutePath fileName
+  getMetaDataJsonPath = (fileName, path) ->
+    fileName = getMetaDataJsonFileName fileName
+    path = getAbsolutePath fileName, path
     return path
 
-  getMetaDataJson = (file, cb) ->
-    jsonPath = getMetaDataJsonPath file
+  getMetaDataJson = (file, path, cb) ->
+    jsonPath = getMetaDataJsonPath file.name, path
     $log.debug "jsonPath: "+jsonPath
     getJson jsonPath, (error, metadata) ->
       if error != null
-        $log.warn(error)
         return cb(error, {})
       else
         return cb(null, metadata)
@@ -201,11 +205,11 @@ exports.FilesService = ($log, $routeParams, $sails) ->
   return {
     getCurrentPath: getCurrentPath
     getAbsolutePath: getAbsolutePath
-    getINodeLink: getINodeLink
-    getPathUrl: getPathUrl
-    extendFile: extendFile
+    getPathQueryString: getPathQueryString
+    getFile: getFile
     isHidden: isHidden
     exists: exists
+    getFileList: getFileList
     getJson: getJson
     getMetaDataJson: getMetaDataJson
   }

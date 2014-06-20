@@ -1,30 +1,30 @@
 .col-xs-12.col-sm-2.col-lg-1(ng-if="!isHidden()", ng-switch on="file.mediatype" class="{{file.mediatype}} {{file.subtype}}")
   div(ng-switch-when="inode")
-    a(ng-href="{{getINodeLink()}}")
+    a(ng-href="{{getPathQueryString()}}")
       i.fa.fa-folder
       |  {{file.name}}
   div(ng-switch-when="video")
     videofile(data-file="file")
   div(ng-switch-when="image")
-    a
+    a(ng-href="/info{{getPathQueryString()}}")
       i.fa.fa-file-image-o
       |  {{file.name}}
   div(ng-switch-when="text")
-    a
+    a(ng-href="/info{{getPathQueryString()}}")
       i.fa.fa-file-text-o
       |  {{file.name}}
   div(ng-switch-when="audio")
-    a
+    a(ng-href="/info{{getPathQueryString()}}")
       i.fa.fa-file-audio-o
       |  {{file.name}}
   div(ng-switch-when="application" ng-switch on="file.subtype")
-    a(ng-switch-when="x-rar")
+    a(ng-switch-when="x-rar", ng-href="/info{{getPathQueryString()}}")
       i.fa.fa-file-archive-o
       |  {{file.name}}
-    a(ng-switch-default)
+    a(ng-switch-default, ng-href="/info{{getPathQueryString()}}")
       i.fa.fa-file-o
       |  {{file.name}}
   div(ng-switch-default)
-    a
+    a(ng-href="/info{{getPathQueryString()}}")
       i.fa.fa-file
       |  {{file.name}}

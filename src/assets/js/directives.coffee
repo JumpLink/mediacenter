@@ -6,20 +6,22 @@ exports.file = () ->
     }
     , templateUrl: 'directives/file'
     , controller: ($scope, FilesService, $log) ->
+      currentPath = FilesService.getCurrentPath();
       $scope.$watch 'file', (newValue, oldValue) ->
         $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
         if newValue.name != oldValue.name or angular.isUndefined(newValue.path)
-          FilesService.extendFile newValue.name, (error, file) ->
+          path = FilesService.getAbsolutePath(newValue.name, currentPath);
+          FilesService.getFile path, (error, file) ->
             if error != null
-              $log.error error
+              $log.warn error
             else
               $scope.file = file
             
-      $scope.getINodeLink = () ->
-        return FilesService.getINodeLink($scope.file)
+      $scope.getPathQueryString = () ->
+        return FilesService.getPathQueryString($scope.file.path)
 
       $scope.isHidden = () ->
-        return FilesService.isHidden($scope.file)
+        return FilesService.isHidden($scope.file, currentPath)
   }
 
 exports.videofile = () ->
@@ -31,18 +33,23 @@ exports.videofile = () ->
     , templateUrl: 'directives/video-file'
     , controller: ($scope, FilesService, $log) ->
 
+      $scope.getPathQueryString = () ->
+        return FilesService.getPathQueryString($scope.file.path)
+
       setMetadata = () ->
-        FilesService.getMetaDataJson $scope.file, (error, metadata) ->
+        currentPath = FilesService.getCurrentPath();
+        FilesService.getMetaDataJson $scope.file, currentPath, (error, metadata) ->
           if(error == null || angular.isUndefined error )
-            $scope.file.metadata = metadata;
+            angular.extend($scope.file.metadata, metadata);
             $log.debug $scope.file
           else
-            $log.error error
+            $scope.file.metadata.type = "unknown"
+            $log.warn error
 
 
       $scope.$watch 'file', (newValue, oldValue) ->
         $log.debug 'video file changed: '+newValue.name+' ('+oldValue.name+')'
-        if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata)
+        if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata.type)
           setMetadata()
 
       $scope.$watch 'file.metadata', (newValue, oldValue) ->

@@ -39,7 +39,9 @@ module.exports.routes = {
   '/server': {
     view: 'index'
   },
-
+  '/info': {
+    view: 'index'
+  },
 
   // Custom routes here...
 
