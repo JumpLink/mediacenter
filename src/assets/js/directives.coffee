@@ -25,7 +25,7 @@ exports.file = () ->
         return FilesService.getPathQueryString($scope.file.path)
 
       $scope.isHidden = () ->
-        return FilesService.isHidden($scope.file, currentPath)
+        return FilesService.isHidden($scope.file)
   }
 
 exports.videofile = () ->

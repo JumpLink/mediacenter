@@ -154,7 +154,7 @@ exports.FilesService = ($log, $routeParams, $sails, async) ->
         cb(response.error, null)
 
   isHidden = (file) ->
-    return file.name.charAt(0) == '.'
+    return angular.isUndefined(file) or angular.isUndefined(file.name) or file.name.charAt(0) == '.'
 
   exists = (path, cb) ->
     $sails.get "/fs/exists"+getPathQueryString(path)
@@ -188,9 +188,9 @@ exports.FilesService = ($log, $routeParams, $sails, async) ->
   getMetaDataJsonFileName = (fileName) ->
     return "." + fileName + ".json"
 
-  getMetaDataJsonPath = (fileName, path) ->
+  getMetaDataJsonPath = (fileName, dirname) ->
     fileName = getMetaDataJsonFileName fileName
-    path = getAbsolutePath fileName, path
+    path = getAbsolutePath fileName, dirname
     return path
 
   getMetaDataJson = (file, path, cb) ->
