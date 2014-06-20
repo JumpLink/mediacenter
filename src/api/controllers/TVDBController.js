@@ -30,7 +30,7 @@ module.exports = {
 
 
   , getMirrors: function (req, res) {
-    sails.log.info("getServerTime");
+    sails.log.info("getMirrors");
     tvdb.getMirrors(function(error, result) {
       if(error) return res.serverError(error);
       else return res.json(result);
@@ -73,7 +73,7 @@ module.exports = {
    * `FilesController.detectFile()`
    */
   , getInfoTvShow: function (req, res) {
-    var query = req.param('id') ? req.param('id') : null;
+    var id = req.param('id') ? req.param('id') : null;
     sails.log.info("getInfoTvShow: "+id);
     tvdb.getInfoTvShow(id, function(error, result) {
       if(error) return res.serverError(error);

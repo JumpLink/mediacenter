@@ -1,3 +1,6 @@
 a
   i.fa.fa-file-video-o
-  |  {{file.name}}
+  span(ng-switch on="file.metadata.type")
+    span(ng-switch-when="episode")  {{file.metadata.tvShow.name}} - {{file.metadata.episode.name}}
+      small  Season {{file.metadata.episode.season | number}} Episode {{file.metadata.episode.number| number}} 
+    span(ng-switch-default)  {{file.name}}

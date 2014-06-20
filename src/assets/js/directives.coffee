@@ -7,10 +7,8 @@ exports.file = () ->
     , templateUrl: 'directives/file'
     , controller: ($scope, FilesService, $log) ->
       $scope.$watch 'file', (newValue, oldValue) ->
-        # $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
-        # $log.debug newValue
-        # $log.debug oldValue
-        if newValue.name != oldValue.name or angular.isUndefined(oldValue.path)
+        $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
+        if newValue.name != oldValue.name or angular.isUndefined(newValue.path)
           FilesService.extendFile newValue.name, (error, file) ->
             if error != null
               $log.error error
@@ -34,22 +32,21 @@ exports.videofile = () ->
     , controller: ($scope, FilesService, $log) ->
 
       setMetadata = () ->
-        jsonPath = FilesService.getMetaDataJsonPath($scope.file)
-        $log.debug "jsonPath: "+jsonPath
-        FilesService.getJson jsonPath, (error, result) ->
-          if error != null
-            $log.warn(error)
-            $scope.file.metadata = {}
+        FilesService.getMetaDataJson $scope.file, (error, metadata) ->
+          if(error == null || angular.isUndefined error )
+            $scope.file.metadata = metadata;
+            $log.debug $scope.file
           else
-            $scope.file.metadata = result
-          $log.debug $scope.file
+            $log.error error
+
 
       $scope.$watch 'file', (newValue, oldValue) ->
-        $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
-        # $log.debug newValue
-        # $log.debug oldValue
-        if newValue.name != oldValue.name or angular.isUndefined(oldValue.metadata)
+        $log.debug 'video file changed: '+newValue.name+' ('+oldValue.name+')'
+        if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata)
           setMetadata()
+
+      $scope.$watch 'file.metadata', (newValue, oldValue) ->
+        $log.debug 'video metadata changed'
 
   }
 

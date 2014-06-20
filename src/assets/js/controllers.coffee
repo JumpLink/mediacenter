@@ -4,6 +4,9 @@ exports.IndexController = ($scope) ->
 exports.SailsController = ($scope) ->
   $scope.test = 'test';
 
+exports.FileInfoController = ($scope) ->
+  $scope.test = 'test';
+
 exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
   $sails.get "/os/ifaces"
     .success (response) ->

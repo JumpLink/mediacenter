@@ -1,3 +1,130 @@
+exports.TVDBService = ($log, $sails) ->
+
+  getLanguages = (cb) ->
+    $sails.get "/tvdb/getLanguages"
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't get languages"
+        cb(response.error, null)
+
+  setLanguage = (lang, cb) ->
+    $sails.get "/tvdb/setLanguage?lang="+lang
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't set languages "+lang
+        cb(response.error, null)
+
+  getMirrors = (lang, cb) ->
+    $sails.get "/tvdb/getMirrors"
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't get mirrors"
+        cb(response.error, null)
+
+  getServerTime = (lang, cb) ->
+    $sails.get "/tvdb/getServerTime"
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't get server time"
+        cb(response.error, null)
+
+  findTvShow = (query, cb) ->
+    $sails.get "/tvdb/findTvShow?query="+query
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        error = if response then angular.toJson response.error else "Can't call findTvShow with query: "+query
+        $log.error error
+        cb(error, null)
+
+  getInfo = (id, cb) ->
+    $sails.get "/tvdb/getInfo?id="+id
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        error = if response then angular.toJson response.error else "Can't call getInfo with id: "+id
+        $log.error error
+        cb(error, null)
+
+  getInfoTvShow = (id, cb) ->
+    $sails.get "/tvdb/getInfoTvShow?id="+id
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        error = if response then angular.toJson response.error else "Can't call getInfoTvShow with id: "+id
+        $log.error error
+        cb(error, null)
+
+  getInfoEpisode = (id, cb) ->
+    $sails.get "/tvdb/getInfoEpisode?id="+id
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        error = if response then angular.toJson response.error else "Can't call getInfoEpisode with id: "+id
+        $log.error error
+        cb(error, null)
+
+  getUpdates = (period, cb) ->
+    $sails.get "/tvdb/getUpdates?period="+period
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        error = if response then angular.toJson response.error else "Can't call getUpdates with period: "+period
+        $log.error error
+        cb(error, null)
+
+  return {
+    getLanguages: getLanguages
+    setLanguage: setLanguage
+    getMirrors: getMirrors
+    getServerTime: getServerTime
+    findTvShow: findTvShow
+    getInfo: getInfo
+    getInfoTvShow: getInfoTvShow
+    getInfoEpisode: getInfoEpisode
+    getUpdates: getUpdates
+  }
+
 exports.FilesService = ($log, $routeParams, $sails) ->
 
   getCurrentPath = () ->
@@ -53,10 +180,23 @@ exports.FilesService = ($log, $routeParams, $sails) ->
       .error (response) ->
         cb(response, {})
 
+  getMetaDataJsonFileName = (file) ->
+    return "." + file.name + ".json"
+
   getMetaDataJsonPath = (file) ->
-    fileName = "." + file.name + ".json";
+    fileName = getMetaDataJsonFileName file
     path = getAbsolutePath fileName
     return path
+
+  getMetaDataJson = (file, cb) ->
+    jsonPath = getMetaDataJsonPath file
+    $log.debug "jsonPath: "+jsonPath
+    getJson jsonPath, (error, metadata) ->
+      if error != null
+        $log.warn(error)
+        return cb(error, {})
+      else
+        return cb(null, metadata)
 
   return {
     getCurrentPath: getCurrentPath
@@ -67,5 +207,5 @@ exports.FilesService = ($log, $routeParams, $sails) ->
     isHidden: isHidden
     exists: exists
     getJson: getJson
-    getMetaDataJsonPath: getMetaDataJsonPath
+    getMetaDataJson: getMetaDataJson
   }

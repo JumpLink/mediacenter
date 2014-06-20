@@ -24,6 +24,7 @@ MediaCenter.config(routes.routeProvider)
 MediaCenter.config(routes.locationProvider)
 
 MediaCenter.service('FilesService', services.FilesService)
+MediaCenter.service('TVDBService', services.TVDBService)
 
 MediaCenter.controller('IndexController', controllers.IndexController)
 MediaCenter.controller('SailsController', controllers.SailsController)
