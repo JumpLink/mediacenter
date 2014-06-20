@@ -27,6 +27,7 @@
     "mmmagic": "http://github.com/mscdex/mmmagic/tarball/master",
     "moviedb": "^0.1.4",
     "omxcontrol": "git://github.com/JumpLink/omxcontrol",
+    "qrcode-terminal": "^0.9.4",
     "rc": "^0.3.5",
     "sails": "^0.10.0-rc8",
     "sails-disk": "~0.10.0",
