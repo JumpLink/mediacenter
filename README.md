@@ -10,3 +10,7 @@ a [Sails](http://sailsjs.org) application
 * Similar Projects
  * [PiR.tv](https://github.com/DonaldDerek/PiR.tv)
  * [angular-rpitv](https://github.com/viperfx/angular-rpitv)
+
+## Bugs
+ * https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261
+ * https://github.com/mscdex/mmmagic/issues/24
