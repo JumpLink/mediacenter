@@ -8,14 +8,18 @@ exports.file = () ->
     , controller: ($scope, FilesService, $log) ->
       currentPath = FilesService.getCurrentPath();
       $scope.$watch 'file', (newValue, oldValue) ->
-        $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
-        if newValue.name != oldValue.name or angular.isUndefined(newValue.path)
-          path = FilesService.getAbsolutePath(newValue.name, currentPath);
-          FilesService.getFile path, (error, file) ->
-            if error != null
-              $log.warn error
-            else
-              $scope.file = file
+        if angular.isDefined(newValue) and angular.isDefined(newValue.name)
+          $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
+          if newValue.name != oldValue.name or angular.isUndefined(newValue.path)
+            path = FilesService.getAbsolutePath(newValue.name, currentPath);
+            FilesService.getFile path, (error, file) ->
+              if error != null
+                $log.warn error
+              else
+                $scope.file = file
+        else
+          $log.error 'invalid file: '
+          $log.error newValue
             
       $scope.getPathQueryString = () ->
         return FilesService.getPathQueryString($scope.file.path)
@@ -48,9 +52,10 @@ exports.videofile = () ->
 
 
       $scope.$watch 'file', (newValue, oldValue) ->
-        $log.debug 'video file changed: '+newValue.name+' ('+oldValue.name+')'
-        if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata.type)
-          setMetadata()
+        if angular.isDefined(newValue) and angular.isDefined(newValue.name)
+          $log.debug 'video file changed: '+newValue.name+' ('+oldValue.name+')'
+          if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata.type)
+            setMetadata()
 
       $scope.$watch 'file.metadata', (newValue, oldValue) ->
         $log.debug 'video metadata changed'
