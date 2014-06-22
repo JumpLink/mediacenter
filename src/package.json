@@ -8,6 +8,7 @@
     "bower": "^1.3.5",
     "ejs": "~0.8.4",
     "extend": "^1.2.1",
+    "ffplaycontrol": "git://github.com/JumpLink/ffplaycontrol",
     "fluent-ffmpeg": "^1.7.2",
     "grunt": "0.4.2",
     "grunt-contrib-clean": "~0.5.0",
@@ -32,6 +33,9 @@
     "sails": "^0.10.0-rc8",
     "sails-disk": "~0.10.0",
     "tvdb": "0.0.13"
+  },
+  "optionalDependencies": {
+    "vlc": "~0.0.4"
   },
   "scripts": {
     "start": "node app.js",
