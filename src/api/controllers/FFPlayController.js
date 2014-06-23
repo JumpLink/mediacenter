@@ -7,8 +7,9 @@
 
 
 
-var ffplay = require('ffplaycontrol');
+var Ffplay = require('ffplaycontrol');
 var Path = require('path')
+var ffplay = null;
 
 module.exports = {
   /**
@@ -18,8 +19,20 @@ module.exports = {
     var path = req.param('id') ? req.param('id') : req.param('filename') ? req.param('filename') : req.param('path') ? req.param('path') : null;
     if(path != null) {
       path = Path.normalize(path);
-      sails.log.debug("start "+path);
-      ffplay.start(path);
+      sails.log.debug("play "+path);
+      sails.sockets.join(req.socket, 'player');
+      console.log(sails.sockets.socketRooms(req.socket));
+
+      if(ffplay != null)
+        ffplay.stop();
+      
+      ffplay = new Ffplay(path);
+      ffplay.play({fs: '-autoexit'});
+
+      //   function (error) {
+      //   sails.sockets.broadcast('player', 'exit', {event: 'exit', error: error, from: req.session.userId, room: 'player', model: 'FFPlay'});
+      // });
+
       return res.ok();
     } else {
       return res.serverError("No path");
@@ -35,51 +48,21 @@ module.exports = {
     return res.ok();
   }
 
-  , play: function (req, res) {
-    sails.log.debug("play");
-    ffplay.play();
+  , toggle_pause: function (req, res) {
+    sails.log.debug("toggle_pause");
+    ffplay.toggle_pause();
     return res.ok();
   }
 
-  , quit: function (req, res) {
-    sails.log.debug("quit");
-    ffplay.quit();
+  , stop: function (req, res) {
+    sails.log.debug("stop");
+    ffplay.stop();
     return res.ok();
   }
 
-  , forward: function (req, res) {
-    sails.log.debug("forward");
-    ffplay.forward();
-    return res.ok();
-  }
-
-  , backward: function (req, res) {
-    sails.log.debug("backward");
-    ffplay.backward();
-    return res.ok();
-  }
-
-  , next_subtitle: function (req, res) {
-    sails.log.debug("next_subtitle");
-    ffplay.next_subtitle();
-    return res.ok();
-  }
-
-  , next_audio: function (req, res) {
-    sails.log.debug("next_audio");
-    ffplay.next_audio();
-    return res.ok();
-  }
-
-  , next_video: function (req, res) {
-    sails.log.debug("next_video");
-    ffplay.next_video();
-    return res.ok();
-  }
-
-  , full_screen: function (req, res) {
-    sails.log.debug("full_screen");
-    ffplay.full_screen();
+  , resume: function (req, res) {
+    sails.log.debug("resume");
+    ffplay.resume();
     return res.ok();
   }
 };

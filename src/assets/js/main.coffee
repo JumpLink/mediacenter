@@ -27,6 +27,9 @@ MediaCenter.config routes.locationProvider
 
 MediaCenter.service 'FilesService', services.FilesService
 MediaCenter.service 'TVDBService', services.TVDBService
+MediaCenter.service 'OmxPlayerService', services.OmxPlayerService
+MediaCenter.service 'FfplayPlayerService', services.FfplayPlayerService
+MediaCenter.service 'PlayerService', services.PlayerService
 MediaCenter.service 'async', () ->
   return require '../third-party/async/lib/async.js'
 
@@ -40,3 +43,4 @@ MediaCenter.controller 'FileInfoController', controllers.FileInfoController
 
 MediaCenter.directive 'file', directives.file
 MediaCenter.directive 'videofile', directives.videofile
+MediaCenter.directive 'playcontrol', directives.playcontrol

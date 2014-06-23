@@ -1,0 +1,33 @@
+.btn-invert {
+  .button-variant(lighten(@navbar-inverse-bg, 5%); @navbar-inverse-bg; @navbar-inverse-border);
+  color: white;
+  &:hover,
+  &:focus
+  {
+    color: @navbar-inverse-color;
+  }
+}
+
+.btn-trans {
+  border-color: transparent;
+  background: transparent;
+  &[disabled] {
+    border-color: transparent;
+    background: transparent;
+  }
+  &:hover {
+    border-color: transparent;
+    background: transparent;
+  }
+}
+
+.btn {
+  i.fa {
+    font-size: 18px;
+  }
+}
+
+.btn-player {
+  color: white;
+  font-size: @playcontrol-media-height;
+}

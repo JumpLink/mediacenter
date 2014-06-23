@@ -213,3 +213,304 @@ exports.FilesService = ($log, $routeParams, $sails, async) ->
     getJson: getJson
     getMetaDataJson: getMetaDataJson
   }
+
+exports.OmxPlayerService = ($log, $sails) ->
+
+  start = (path, cb) ->
+    $log.debug "/omx/start?id="+path
+    $sails.get "/omx/start?id="+path
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  toogle_pause = (cb) ->
+    # $log.debug "/omx/pause
+    $sails.get "/omx/pause"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  play = (cb) ->
+    # $log.debug "/omx/start
+    $sails.get "/omx/play"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  volume_up = (cb) ->
+    # $log.debug "/omx/volume_up
+    $sails.get "/omx/volume_up"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  volume_down = (cb) ->
+    # $log.debug "/omx/volume_down
+    $sails.get "/omx/volume_down"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  quit = (cb) ->
+    # $log.debug "/omx/quit
+    $sails.get "/omx/quit"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  forward = (cb) ->
+    # $log.debug "/omx/forward
+    $sails.get "/omx/forward"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  backward = (cb) ->
+    # $log.debug "/omx/backward
+    $sails.get "/omx/backward"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  next_subtitle = (cb) ->
+    # $log.debug "/omx/next_subtitle
+    $sails.get "/omx/next_subtitle"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  previous_subtitle = (cb) ->
+    # $log.debug "/omx/previous_subtitle
+    $sails.get "/omx/previous_subtitle"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  next_chapter = (cb) ->
+    # $log.debug "/omx/next_chapter
+    $sails.get "/omx/next_chapter"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  previous_chapter = (cb) ->
+    # $log.debug "/omx/previous_chapter
+    $sails.get "/omx/previous_chapter"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  next_audio = (cb) ->
+    # $log.debug "/omx/next_audio
+    $sails.get "/omx/next_audio"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  previous_audio = (cb) ->
+    # $log.debug "/omx/previous_audio
+    $sails.get "/omx/previous_audio"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  increase_speed = (cb) ->
+    # $log.debug "/omx/increase_speed
+    $sails.get "/omx/increase_speed"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  decrease_speed = (cb) ->
+    # $log.debug "/omx/decrease_speed
+    $sails.get "/omx/decrease_speed"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  return {
+    start: start
+    toogle_pause: toogle_pause
+    quit: quit
+    forward: forward
+    backward: backward
+    next_subtitle: next_subtitle
+    next_audio: next_audio
+  }
+
+exports.FfplayPlayerService = ($log, $sails) ->
+
+  start = (path, cb) ->
+    $log.debug "/ffplay/start?id="+path
+    $sails.get "/ffplay/start?id="+path
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  pause = (cb) ->
+    # $log.debug "/ffplay/pause
+    $sails.get "/ffplay/pause"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  toggle_pause = (cb) ->
+    # $log.debug "/ffplay/pause
+    $sails.get "/ffplay/toggle_pause"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  quit = (cb) ->
+    # $log.debug "/ffplay/quit
+    $sails.get "/ffplay/quit"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  resume = (cb) ->
+    # $log.debug "/ffplay/resume
+    $sails.get "/ffplay/resume"
+      .success (response) ->
+        cb(null);
+      .error (response) ->
+        cb(response);
+
+  return {
+    start: start
+    pause: pause
+    toggle_pause: toggle_pause
+    quit: quit
+    resume: resume
+  }
+
+exports.PlayerService = ($rootScope, $sails, $log, OmxPlayerService, FfplayPlayerService) ->
+
+  $rootScope.player = {
+    program: null # omxplayer | ffplay
+    status: 'stop' # stop | play | pause
+  }
+
+  $sails.on 'exit', (message) ->
+    $log.debug '$sails.on exit in PlayerService'
+    $log.debug message
+
+  togglePauseState = () ->
+    switch $rootScope.player.status
+      when 'play' then $rootScope.player.status = 'pause'
+      when 'pause' then $rootScope.player.status = 'play'
+
+  setAvailablePlayer = () ->
+    $sails.get "/os/program_exists?name=omxplayer"
+      .success (response) ->
+        if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
+          $rootScope.player.program = "omxplayer";
+          $log.debug "omxplayer is used"
+        else
+          $log.debug "omxplayer is not installed"
+          $sails.get "/os/program_exists?name=ffplay"
+            .success (response) ->
+              if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
+                $rootScope.player.program = "ffplay";
+                $log.debug "ffplay is used"
+              else
+                $log.debug "ffplay is not installed"
+
+  start = (path, cb) ->
+    # $log.debug "/ffplay/start?id="+path
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.start(path, cb)
+      $rootScope.player.status = 'play'
+    else if $rootScope.player.program == "ffplay"
+      FfplayPlayerService.start(path, cb)
+      $rootScope.player.status = 'play'
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+
+  pause = () ->
+    # $log.debug "/ffplay/pause
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.toogle_pause (error) ->
+        togglePauseState();
+    else if $rootScope.player.program == "ffplay"
+      FfplayPlayerService.toggle_pause (error) ->
+        togglePauseState();
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+     
+  quit = () ->
+    # $log.debug "/ffplay/quit
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.quit (error) ->
+    else if $rootScope.player.program == "ffplay"
+      $log.error "command not available for ffplay";
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+     
+  forward = () ->
+    # $log.debug "/ffplay/forward
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.forward (error) ->
+    else if $rootScope.player.program == "ffplay"
+      $log.error "command not available for ffplay";
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+     
+  backward = () ->
+    # $log.debug "/ffplay/backward
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.backward (error) ->
+    else if $rootScope.player.program == "ffplay"
+      $log.error "command not available for ffplay";
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+     
+  next_subtitle = () ->
+    # $log.debug "/ffplay/next_subtitle
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.next_subtitle (error) ->
+    else if $rootScope.player.program == "ffplay"
+      $log.error "command not available for ffplay";
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+     
+  next_audio = () ->
+    # $log.debug "/ffplay/next_audio
+    if $rootScope.player.program == "omxplayer"
+      OmxPlayerService.next_audio (error) ->
+    else if $rootScope.player.program == "ffplay"
+      $log.error "command not available for ffplay";
+    else
+      $log.error "no media player installed, please install omxplayer or ffplay"
+
+  setAvailablePlayer();
+
+  return {
+    start: start
+    pause: pause
+    quit: quit
+    forward: forward
+    backward: backward
+    next_subtitle: next_subtitle
+    next_audio: next_audio
+  }

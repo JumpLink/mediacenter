@@ -25,10 +25,10 @@ module.exports = {
     var dirToRead = req.param('id') ? req.param('id') : req.param('path') ? req.param('path') : '/';
     dirToRead = Path.normalize(dirToRead);
     fs.exists(dirToRead, function (exists) {
-      if(!exists) return res.serverError('path not found');
+      if(!exists) return res.notFound('path not found');
       else {
         fs.readdir(dirToRead, function (err, files) {
-          if (err) return res.serverError(err);
+          if (err) return res.badRequest(err);
           else return res.json({files:files});
         });
       }
@@ -48,7 +48,7 @@ module.exports = {
     path = Path.normalize(path);
     fs.exists(path, function (exists) {
       if(exists) return res.json(require(path));
-      else return res.serverError("Json not found");
+      else return res.notFound("Json not found");
     });
     
     
@@ -71,7 +71,7 @@ module.exports = {
     sails.log.debug ("detectFile "+file.path);
 
     fs.exists(file.path, function (exists) {
-      if (!exists) return res.serverError('File not found');
+      if (!exists) return res.notFound('File not found');
       fs.stat(file.path, function (err, stats) {
         if (err) return res.serverError(err);
         extend(file, stats);

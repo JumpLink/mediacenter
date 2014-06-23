@@ -26,6 +26,9 @@ exports.file = () ->
 
       $scope.isHidden = () ->
         return FilesService.isHidden($scope.file)
+
+      $scope.start = () ->
+        PlayerService.start($scope.file.path);
   }
 
 exports.videofile = () ->
@@ -62,6 +65,13 @@ exports.videofile = () ->
 
   }
 
-  # gaskocher fur 2 platten
-  # rockharz
-  # zeld
+exports.playcontrol = () ->
+  return {
+    restrict: "E"
+    , templateUrl: 'directives/playcontrol'
+    , controller: ($scope, $rootScope, $log, PlayerService) ->
+
+      $scope.pause = () ->
+        PlayerService.pause();
+
+  }

@@ -24,7 +24,7 @@ exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
     $scope.moment = moment()
   , 1000
 
-exports.FileInfoController = ($rootScope, $scope, $log, FilesService, $routeParams) ->
+exports.FileInfoController = ($rootScope, $scope, $log, FilesService, $routeParams, PlayerService) ->
   # TODO optimieren erst zum schluss
   loadFileFromRootScope = angular.isDefined($routeParams.global) == true
   if loadFileFromRootScope
@@ -39,11 +39,11 @@ exports.FileInfoController = ($rootScope, $scope, $log, FilesService, $routePara
         if file.path != path
           $log.warn file.path+" != "+path
 
-exports.FilesController = ($scope, $sails, $log, FilesService) ->
+  $scope.start = () ->
+    PlayerService.start $scope.file.path, (err) ->
+      if err then $log.error(err)
 
-  $sails.on 'message', (message) ->
-    $log.debug '$sails.on'
-    $log.debug message
+exports.FilesController = ($scope, $sails, $log, FilesService) ->
 
   currentPath = FilesService.getCurrentPath()
   FilesService.getFileList currentPath, (error, files) ->

@@ -1,0 +1,23 @@
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  -webkit-transform: translateZ(0); // https://stackoverflow.com/questions/11258877/fixed-element-disappears-in-chrome
+}
+
+playcontrol {
+  .navbar {
+    min-height: @playcontrol-media-height + (2 * @playcontrol-margin);
+  }
+  .navbar-inverse {
+    .media-list {
+      margin-top: @playcontrol-margin;
+      margin-bottom: @playcontrol-margin;
+      height: @playcontrol-media-height;
+    }  
+    .media-body {
+      color: @gray-light;
+    }
+    .media-heading {
+      color: @gray-lighter;
+    }
+  }
+}

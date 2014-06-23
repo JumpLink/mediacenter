@@ -6,6 +6,7 @@
  */
 
 var os=require('os');
+var exec = require('child_process').exec;
 
 module.exports = {
   
@@ -29,6 +30,22 @@ module.exports = {
   , reboot: function (req, res) {
     return res.ok();
   }
+
+  , program_exists: function (req, res) {
+    var name = req.param('id') ? req.param('id') : req.param('name') ? req.param('name') : null;
+    if (name != null) {
+      var child = exec("command -v "+name, function (error, stdout, stderr) {
+        sails.log.debug(error);
+        return res.json({exists:!error});
+      });
+      
+      
+    } else {
+      return res.serverError("No program");
+    }
+    
+  }
+
 
 
 };

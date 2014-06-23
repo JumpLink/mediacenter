@@ -4,7 +4,7 @@ html(lang="en", ng-app="MediaCenter")
     title= title
 
     // Viewport mobile tag for sensible mobile support
-    meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1,  user-scalable=no")
+    meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no")
 
     // Bring in the socket.io client
     script(type="text/javascript", src="/js/dependencies/socket.io.js")
@@ -27,7 +27,7 @@ html(lang="en", ng-app="MediaCenter")
 
     script(type="text/ng-template", id="directives/file"): include directives/file.jade
     script(type="text/ng-template", id="directives/video-file"): include directives/video-file.jade
-
+    script(type="text/ng-template", id="directives/playcontrol"): include directives/playcontrol.jade
 
   body
     div(ng-view)
