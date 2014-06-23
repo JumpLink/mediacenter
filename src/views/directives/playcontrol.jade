@@ -1,20 +1,13 @@
 nav.navbar.navbar-inverse.navbar-fixed-bottom
   .container
-    //- .media
-    //-   .pull-left(href='#')
-    //-     img.media-object(src='...', alt='...')
-    //-   .media-body
-    //-     h4.media-heading Media heading
-    //-     | ...
-    //-   .pull-right
-    //-     button.btn.btn-player(ng-click="pause()")
-    //-       i.fa.fa-play
     ul.media-list
       li.media
-        a.pull-left(href='#')
+        .pull-left(href='#')
           img.media-object(alt='60x60', src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+', style='width: 60px; height: 60px;')
-        a.pull-right(href='#')
-          i.btn-player.fa.fa-play(ng-click="pause()")
+        .pull-right(ng-click="toogle_pause()", ng-switch, on="$root.player.status", )
+          i.btn-player.fa.fa-play(ng-switch-when="pause")
+          i.btn-player.fa.fa-pause(ng-switch-when="play")
+          i.btn-player.fa.fa-play(disabled="disabled", ng-switch-when="stop")
         .media-body
           h4.media-heading Media heading
           | Cras sit amet nibh libero, in gravida nulla.

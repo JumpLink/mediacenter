@@ -1,7 +1,15 @@
-# var io = require('../third-party/socket.io-client/socket.io.js')
-# require('./dependencies/sails.io.js')
+
 require '../third-party/angular/angular.js'
 require '../third-party/angular-route/angular-route.js'
+
+#io = require '../third-party/socket.io-client/socket.io.js'
+# require './dependencies/socket.io.js'
+# console.log io
+
+# sailsio = require './dependencies/sails.io.js'
+# io = sailsio.SailsIOClient(io)
+# console.log io
+
 require '../third-party/angular-sails/dist/angular-sails.js'
 # require '../third-party/qrcode-generator/js/qrcode.js' see script tag in index.jade
 require '../third-party/angular-qrcode/qrcode.js'
@@ -25,6 +33,7 @@ MediaCenter = angular.module 'MediaCenter', [
 MediaCenter.config routes.routeProvider
 MediaCenter.config routes.locationProvider 
 
+# MediaCenter.provider '$sails', services.sails(io)
 MediaCenter.service 'FilesService', services.FilesService
 MediaCenter.service 'TVDBService', services.TVDBService
 MediaCenter.service 'OmxPlayerService', services.OmxPlayerService

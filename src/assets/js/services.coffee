@@ -411,14 +411,34 @@ exports.PlayerService = ($rootScope, $sails, $log, OmxPlayerService, FfplayPlaye
     status: 'stop' # stop | play | pause
   }
 
-  $sails.on 'exit', (message) ->
-    $log.debug '$sails.on exit in PlayerService'
-    $log.debug message
+  $sails.get "/ffplay/info"
+    .success (response) ->
+      angular.extend $rootScope.player, response
+      $log.debug $rootScope.player
+    .error (response) ->
+      $log.error response
+      angular.extend $rootScope.player, response
+      $log.debug $rootScope.player
 
-  togglePauseState = () ->
-    switch $rootScope.player.status
-      when 'play' then $rootScope.player.status = 'pause'
-      when 'pause' then $rootScope.player.status = 'play'
+  $sails.on 'start', (message) ->
+    $log.debug '$sails.on start in PlayerService'
+    $rootScope.player.status = 'play';
+
+  $sails.on 'complete', (message) ->
+    $log.debug '$sails.on complete in PlayerService'
+    $rootScope.player.status = 'stop';
+
+  $sails.on 'pause', (message) ->
+    $log.debug '$sails.on pause in PlayerService'
+    $rootScope.player.status = 'pause';
+
+  $sails.on 'resume', (message) ->
+    $log.debug '$sails.on resume in PlayerService'
+    $rootScope.player.status = 'play';
+
+  $sails.on 'stop', (message) ->
+    $log.debug '$sails.on stop in PlayerService'
+    $rootScope.player.status = 'stop';
 
   setAvailablePlayer = () ->
     $sails.get "/os/program_exists?name=omxplayer"
@@ -447,14 +467,12 @@ exports.PlayerService = ($rootScope, $sails, $log, OmxPlayerService, FfplayPlaye
     else
       $log.error "no media player installed, please install omxplayer or ffplay"
 
-  pause = () ->
+  toogle_pause = () ->
     # $log.debug "/ffplay/pause
     if $rootScope.player.program == "omxplayer"
       OmxPlayerService.toogle_pause (error) ->
-        togglePauseState();
     else if $rootScope.player.program == "ffplay"
       FfplayPlayerService.toggle_pause (error) ->
-        togglePauseState();
     else
       $log.error "no media player installed, please install omxplayer or ffplay"
      
@@ -507,7 +525,7 @@ exports.PlayerService = ($rootScope, $sails, $log, OmxPlayerService, FfplayPlaye
 
   return {
     start: start
-    pause: pause
+    toogle_pause: toogle_pause
     quit: quit
     forward: forward
     backward: backward

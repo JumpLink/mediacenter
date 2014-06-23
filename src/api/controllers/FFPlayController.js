@@ -11,7 +11,16 @@ var Ffplay = require('ffplaycontrol');
 var Path = require('path')
 var ffplay = null;
 
+var player = {
+  status: 'stop' // stop | play | pause
+}
+
 module.exports = {
+
+  info: function (req, res) {
+    return res.json(player);
+  },
+
   /**
    * `ffplayController.start()`
    */
@@ -20,19 +29,51 @@ module.exports = {
     if(path != null) {
       path = Path.normalize(path);
       sails.log.debug("play "+path);
-      sails.sockets.join(req.socket, 'player');
-      console.log(sails.sockets.socketRooms(req.socket));
 
-      if(ffplay != null)
-        ffplay.stop();
+      if(ffplay != null) {
+        ffplay._resume();
+        ffplay._stop();
+      }
       
       ffplay = new Ffplay(path);
-      ffplay.play({fs: '-autoexit'});
+      ffplay.start({fs: '-autoexit'});
 
-      //   function (error) {
-      //   sails.sockets.broadcast('player', 'exit', {event: 'exit', error: error, from: req.session.userId, room: 'player', model: 'FFPlay'});
+      // TODO FIXME
+      // ffplay.on('start', function (stream) {
+      //   sails.log.debug('Event: start');
+      //   player.status = 'play';
+      //   sails.sockets.broadcast('player', 'start', {room: 'player', model: 'FFPlay'});
       // });
 
+      // WORKAROUND for bug on top
+      player.status = 'play';
+      sails.sockets.broadcast('player', 'start', {room: 'player', model: 'FFPlay'});
+      
+
+      ffplay.on('complete', function (stream) {
+        sails.log.debug('Event: complete');
+        player.status = 'stop';
+        sails.sockets.broadcast('player', 'complete', {room: 'player', model: 'FFPlay'});
+      });
+
+      ffplay.on('pause', function (stream) {
+        sails.log.debug('Event: pause');
+        player.status = 'pause';
+        sails.sockets.broadcast('player', 'pause', {room: 'player', model: 'FFPlay'});
+      });
+
+      ffplay.on('resume', function (stream) {
+        sails.log.debug('Event: resume');
+        player.status = 'play';
+        sails.sockets.broadcast('player', 'resume', {room: 'player', model: 'FFPlay'});
+      });
+
+      ffplay.on('stop', function (stream) {
+        sails.log.debug('Event: stop');
+        player.status = 'stop';
+        sails.sockets.broadcast('player', 'stop', {room: 'player', model: 'FFPlay'});
+      });
+      
       return res.ok();
     } else {
       return res.serverError("No path");
@@ -56,6 +97,7 @@ module.exports = {
 
   , stop: function (req, res) {
     sails.log.debug("stop");
+    ffplay._resume();
     ffplay.stop();
     return res.ok();
   }

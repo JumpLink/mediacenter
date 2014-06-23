@@ -12,9 +12,6 @@ html(lang="en", ng-app="MediaCenter")
     // then beef it up with some convenience logic for talking to Sails.js'
     script(type="text/javascript", src="/js/dependencies/sails.io.js")
 
-    script(type="text/javascript", src="/third-party/qrcode-generator/js/qrcode.js")
-    script(type="text/javascript", src="/third-party/moment/moment.js")
-
     // Stylesheets
     link(href='styles/importer.css', rel='stylesheet')
 
@@ -31,6 +28,9 @@ html(lang="en", ng-app="MediaCenter")
 
   body
     div(ng-view)
+
+    script(type="text/javascript", src="/third-party/qrcode-generator/js/qrcode.js")
+    script(type="text/javascript", src="/third-party/moment/moment.js")
 
     // browserfy
     script(type="text/javascript", src="/main.js")

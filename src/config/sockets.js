@@ -18,7 +18,8 @@ module.exports.sockets = {
   // mixes in socket.io events for your routes and blueprints automatically.
   onConnect: function(session, socket) {
 
-    // By default, do nothing.
+    // Everyone os joint to player
+    sails.sockets.join(socket, 'player');
 
   },
 
