@@ -8,6 +8,14 @@ nav.navbar.navbar-inverse.navbar-fixed-bottom
           i.btn-player.fa.fa-play(ng-switch-when="pause")
           i.btn-player.fa.fa-pause(ng-switch-when="play")
           i.btn-player.fa.fa-play(disabled="disabled", ng-switch-when="stop")
+        .timer.pull-right(ng-click="toogle_pause()", ng-switch, on="$root.player.status", )
+          | {{$root.duration}}
+          br
+          | {{$root.length}} 
         .media-body
-          h4.media-heading Media heading {{$root.duration}}
-          | Cras sit amet nibh libero, in gravida nulla.
+          h5.media-heading(ng-if="!$root.player.file.metadata.tvShow.name") {{$root.player.file.name}}
+          h5.media-heading(ng-if="$root.player.file.metadata.tvShow.name") {{$root.player.file.metadata.tvShow.name}}
+          | {{$root.player.file.metadata.episode.name}}
+          br
+          span(ng-if="$root.player.file.metadata.episode.season")
+            | Season {{$root.player.file.metadata.episode.season}} / Episode {{$root.player.file.metadata.episode.number}}

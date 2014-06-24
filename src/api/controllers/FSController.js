@@ -40,10 +40,9 @@ module.exports = {
 
   , getJson: function (req, res) {
     var path = req.param('id') ? req.param('id') : req.param('path') ? req.param('path') : '/';
-    path = Path.normalize(path);
-    fs.exists(path, function (exists) {
-      if(exists) return res.json(require(path));
-      else return res.notFound("Json not found");
+    FSService.getJson(path, function (error, file) {
+      if(!error) return res.json(file);
+      else return res.notFound(error);
     });
   }
 

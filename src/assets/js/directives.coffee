@@ -43,22 +43,22 @@ exports.videofile = () ->
       $scope.getPathQueryString = () ->
         return FilesService.getPathQueryString($scope.file.path)
 
-      setMetadata = () ->
-        currentPath = FilesService.getCurrentPath();
-        FilesService.getMetaDataJson $scope.file, currentPath, (error, metadata) ->
-          if(error == null || angular.isUndefined error )
-            angular.extend($scope.file.metadata, metadata);
-            $log.debug $scope.file
-          else
-            $scope.file.metadata.type = "unknown"
-            $log.warn error
+      # setMetadata = () ->
+      #   currentPath = FilesService.getCurrentPath();
+      #   FilesService.getMetaDataJson $scope.file, currentPath, (error, metadata) ->
+      #     if(error == null || angular.isUndefined error )
+      #       angular.extend($scope.file.metadata, metadata);
+      #       $log.debug $scope.file
+      #     else
+      #       $scope.file.metadata.type = "unknown"
+      #       $log.warn error
 
 
       $scope.$watch 'file', (newValue, oldValue) ->
         if angular.isDefined(newValue) and angular.isDefined(newValue.name)
           $log.debug 'video file changed: '+newValue.name+' ('+oldValue.name+')'
-          if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata.type)
-            setMetadata()
+          # if newValue.name != oldValue.name or angular.isUndefined(newValue.metadata.type)
+          #   setMetadata()
 
       $scope.$watch 'file.metadata', (newValue, oldValue) ->
         $log.debug 'video metadata changed'

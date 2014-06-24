@@ -416,16 +416,51 @@ exports.PlayerService = ($rootScope, $sails, $log, $interval, OmxPlayerService, 
   timer = null
 
   humanizeDuration = (duration) ->
-    return duration.hours() + ":" + duration.minutes() + ":" + duration.seconds()
+    hours = duration.hours()
+    minutes = duration.minutes()
+    seconds = duration.seconds()
 
-  updateTimer = () ->
-    $rootScope.duration = humanizeDuration($rootScope.player.duration)
+    if(hours == 0)
+      hours = "";
+    else
+      hours += ":"
+
+    if(minutes <= 9)
+      minutes = "0" + minutes
+    minutes += ":"
+
+    if(seconds <= 9)
+      seconds = "0" + seconds
+
+    timeString = hours + minutes + seconds;
+
+    if(timeString == "0:0")
+      timeString = "";
+
+    return timeString
+
+  durationIsValid = (duration) ->
+    if angular.isDefined(duration) and duration != null and angular.isDefined(duration._milliseconds) 
+      return true
+
+  durationChanged = (d1, d2) ->
+    if not durationIsValid(d1)
+      return false
+    if durationIsValid(d1) and not durationIsValid(d2)
+      return true
+    if durationIsValid(d1) and durationIsValid(d2)
+      if d1._milliseconds != d2._milliseconds
+        return true
+      else
+        return false
+    else
+      return false
 
   startTimer = () ->
-    timer = $interval ()->
+    timer = $interval () =>
+      $rootScope.player.duration = moment.duration($rootScope.player.duration._milliseconds)
       second = moment.duration(1, 's')
       $rootScope.player.duration.add(second)
-      updateTimer()
     , 1000
 
   stopTimer = () ->
@@ -433,30 +468,47 @@ exports.PlayerService = ($rootScope, $sails, $log, $interval, OmxPlayerService, 
       $interval.cancel(timer);
 
   updatePlayer = (newValue) ->
-    $log.debug "updatePlayer: "
-    $log.debug newValue.duration
-    
-    newValue.duration = moment.duration(newValue.duration._milliseconds);
-    $log.debug newValue.duration
-
     angular.extend $rootScope.player, newValue
-    $log.debug $rootScope.player
 
-    updateTimer()
+  $rootScope.$watch 'player.file.metadata.format.duration', (newValue, oldValue) ->
+    $log.debug 'change player.file.metadata.format.duration' 
+    $log.debug newValue
+    if angular.isDefined newValue
+      if not angular.equals newValue, oldValue
+        if angular.isDefined newValue._milliseconds
+          newValue = moment.duration(newValue._milliseconds)
+        else
+          newValue = moment.duration(parseInt(newValue), 'seconds')
+        $rootScope.length = humanizeDuration(newValue)
+        $rootScope.player.file.metadata.format.duration = newValue
+
+  $rootScope.$watch 'player.file', (newValue, oldValue) ->
+    $log.debug 'change player.file'
+    $log.debug newValue
+
+  $rootScope.$watchCollection 'player.duration', (newValue, oldValue) ->
+    # $log.debug 'change player.duration'
+    # $log.debug newValue
+    if durationChanged(newValue, oldValue)
+      $rootScope.player.duration = moment.duration(newValue._milliseconds)
+      $rootScope.duration = humanizeDuration($rootScope.player.duration)
 
   $rootScope.$watch 'player.status', (newValue, oldValue) ->
-    $log.debug "player.status update: "+newValue
-    switch newValue
-      when 'play' then startTimer()
-      when 'pause' then stopTimer()
-      when 'stop' then stopTimer()
+    $log.debug 'change player.status'
+    $log.debug newValue
+    if angular.isDefined newValue
+      switch newValue
+        when 'play' then startTimer()
+        when 'pause' then stopTimer()
+        when 'stop' then stopTimer()
       
   $sails.get "/ffplay/info"
     .success (response) ->
       $log.debug response
       updatePlayer (response.player)
     .error (response) -> # FIXME
-      updatePlayer (response.player)
+      #updatePlayer (response.player)
+      $log.error response
 
   $sails.on 'start', (message) ->
     $log.debug '$sails.on start in PlayerService'

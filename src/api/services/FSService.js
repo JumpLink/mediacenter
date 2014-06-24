@@ -7,6 +7,33 @@ var Ffmpeg = require('fluent-ffmpeg');
 
 var mime = require('mime'); // WORKAROUND for https://github.com/mscdex/mmmagic/issues/24
 
+var getJson = function (path, callback) {
+  path = Path.normalize(path);
+  fs.exists(path, function (exists) {
+    if(exists) return callback(null, require(path));
+    else return callback("Json not found");
+  });
+}
+exports.getJson = getJson;
+
+var getMetaDataJsonFileName = function (fileName) {
+  return "." + fileName + ".json"
+}
+
+var getMetaDataJson = function (fileName, dirname, callback) {
+  var name = getMetaDataJsonFileName(fileName);
+  var path = dirname + "/" + name
+  fs.exists(path, function (exists) {
+    if(exists) {
+      getJson(path, function (error, file) {
+        callback(error, file);
+      });
+    } else {
+      callback("not found");
+    }
+  });
+}
+    
 exports.detectFile = function(filePath, callback) {
   filePath = Path.normalize(filePath);
   var dirname = Path.dirname(filePath);
@@ -39,13 +66,21 @@ exports.detectFile = function(filePath, callback) {
           extend(file, {mimetype: mime_type, mediatype: types[0], subtype: types[1]});
 
           if(file.mediatype == 'video') {
-            Ffmpeg.ffprobe(file.path, function(err, metadata) {
-              if (err) {
-                err.note = "Be sure you have ffmpeg installed."
-                return callback(err);
-              }
-              file.metadata = metadata;
-              return callback(null, file);
+            getMetaDataJson(file.name, file.dirname, function (error, json) {
+              if(!error) file.metadata = json;
+
+              Ffmpeg.ffprobe(file.path, function(err, metadata) {
+                if (err) {
+                  err.note = "Be sure you have ffmpeg installed."
+                  return callback(err);
+                }
+                if(typeof file.metadata != 'undefined')
+                  extend(file.metadata, metadata);
+                else
+                  file.metadata = metadata;
+                return callback(null, file);
+              });
+
             });
           } else {
             return callback(null, file);
