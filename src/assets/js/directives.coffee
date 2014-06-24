@@ -69,27 +69,19 @@ exports.playcontrol = () ->
   return {
     restrict: "E"
     , templateUrl: 'directives/playcontrol'
-    , controller: ($scope, $sails, $rootScope, $log, PlayerService) ->
+    , controller: ($scope, $sails, $rootScope, $log, $interval, PlayerService) ->
 
-      $sails.on 'start', (message) ->
-        $log.debug '$sails.on start in playcontrol directive'
-        $log.debug message
+      # $sails.on 'start', (message) ->
+      #   $log.debug '$sails.on start in playcontrol directive'
 
-      $sails.on 'complete', (message) ->
-        $log.debug '$sails.on complete in playcontrol directive'
-        $log.debug message
+      # $sails.on 'pause', (message) ->
+      #   $log.debug '$sails.on pause in playcontrol directive'
 
-      $sails.on 'pause', (message) ->
-        $log.debug '$sails.on pause in playcontrol directive'
-        $log.debug message
+      # $sails.on 'resume', (message) ->
+      #   $log.debug '$sails.on resume in playcontrol directive'
 
-      $sails.on 'resume', (message) ->
-        $log.debug '$sails.on resume in playcontrol directive'
-        $log.debug message
-
-      $sails.on 'stop', (message) ->
-        $log.debug '$sails.on stop in playcontrol directive'
-        $log.debug message
+      # $sails.on 'stop', (message) ->
+      #   $log.debug '$sails.on stop in playcontrol directive'
 
       $scope.toogle_pause = () ->
         PlayerService.toogle_pause();

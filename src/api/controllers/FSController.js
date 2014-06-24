@@ -45,8 +45,6 @@ module.exports = {
       if(exists) return res.json(require(path));
       else return res.notFound("Json not found");
     });
-    
-    
   }
 
   /**
@@ -57,7 +55,7 @@ module.exports = {
     FSService.detectFile(filePath, function (error, file) {
       if(error != null) return res.serverError(error);
       else return res.json(file);
-    })
+    });
   }
 };
 

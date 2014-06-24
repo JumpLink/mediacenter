@@ -404,41 +404,75 @@ exports.FfplayPlayerService = ($log, $sails) ->
     resume: resume
   }
 
-exports.PlayerService = ($rootScope, $sails, $log, OmxPlayerService, FfplayPlayerService) ->
+exports.PlayerService = ($rootScope, $sails, $log, $interval, OmxPlayerService, FfplayPlayerService) ->
 
   $rootScope.player = {
     program: null # omxplayer | ffplay
     status: 'stop' # stop | play | pause
+    duration: null
+    start: null
   }
 
+  timer = null
+
+  humanizeDuration = (duration) ->
+    return duration.hours() + ":" + duration.minutes() + ":" + duration.seconds()
+
+  updateTimer = () ->
+    $rootScope.duration = humanizeDuration($rootScope.player.duration)
+
+  startTimer = () ->
+    timer = $interval ()->
+      second = moment.duration(1, 's')
+      $rootScope.player.duration.add(second)
+      updateTimer()
+    , 1000
+
+  stopTimer = () ->
+    if(timer != null)
+      $interval.cancel(timer);
+
+  updatePlayer = (newValue) ->
+    $log.debug "updatePlayer: "
+    $log.debug newValue.duration
+    
+    newValue.duration = moment.duration(newValue.duration._milliseconds);
+    $log.debug newValue.duration
+
+    angular.extend $rootScope.player, newValue
+    $log.debug $rootScope.player
+
+    updateTimer()
+
+  $rootScope.$watch 'player.status', (newValue, oldValue) ->
+    $log.debug "player.status update: "+newValue
+    switch newValue
+      when 'play' then startTimer()
+      when 'pause' then stopTimer()
+      when 'stop' then stopTimer()
+      
   $sails.get "/ffplay/info"
     .success (response) ->
-      angular.extend $rootScope.player, response
-      $log.debug $rootScope.player
-    .error (response) ->
-      $log.error response
-      angular.extend $rootScope.player, response
-      $log.debug $rootScope.player
+      $log.debug response
+      updatePlayer (response.player)
+    .error (response) -> # FIXME
+      updatePlayer (response.player)
 
   $sails.on 'start', (message) ->
     $log.debug '$sails.on start in PlayerService'
-    $rootScope.player.status = 'play';
-
-  $sails.on 'complete', (message) ->
-    $log.debug '$sails.on complete in PlayerService'
-    $rootScope.player.status = 'stop';
+    updatePlayer (message.player)
 
   $sails.on 'pause', (message) ->
     $log.debug '$sails.on pause in PlayerService'
-    $rootScope.player.status = 'pause';
+    updatePlayer (message.player)
 
   $sails.on 'resume', (message) ->
     $log.debug '$sails.on resume in PlayerService'
-    $rootScope.player.status = 'play';
+    updatePlayer (message.player)
 
   $sails.on 'stop', (message) ->
     $log.debug '$sails.on stop in PlayerService'
-    $rootScope.player.status = 'stop';
+    updatePlayer (message.player)
 
   setAvailablePlayer = () ->
     $sails.get "/os/program_exists?name=omxplayer"
