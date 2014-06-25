@@ -14,6 +14,7 @@ var os=require('os');
 var qrcode = require('qrcode-terminal');
 var Path = require('path');
 var spawn = require('child_process').spawn
+//var exec = require('child_process').exec
 
 var checkConfig = function (cb) {
   if(typeof sails.config.TMDb == 'undefined')
@@ -52,7 +53,9 @@ var startKioskBrowser = function () {
         else {
           sails.log.debug(arch);
           var browser = Path.normalize(__dirname + "/../../bin/browser_"+arch);
-          spawn(browser, ['http://localhost:'+sails.config.port+"/server"], {stdio: [ 'ignore', 'ignore', 'ignore' ]});
+          sails.log.debug(browser);
+          spawn(browser, ['http://localhost:'+sails.config.port+"/server"], {stdio: [ 'ignore', 'ignore', 'ignore' ], env: {DISPLAY: ':0.0'}});
+          //exec(browser+'http://localhost:'+sails.config.port+"/server", {env: {DISPLAY: ':0.0'}});
         } 
       });
     }, sails.config.kioskBrowser.timeout);

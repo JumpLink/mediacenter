@@ -36,7 +36,6 @@
     "tvdb": "0.0.13"
   },
   "optionalDependencies": {
-    "vlc": "~0.0.4"
   },
   "scripts": {
     "start": "node app.js",
