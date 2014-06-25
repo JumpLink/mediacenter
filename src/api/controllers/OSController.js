@@ -46,6 +46,10 @@ module.exports = {
     
   }
 
+  , home: function (req, res) {
+    return res.json({dirname: process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'], username: process.env['USER']});
+  }
+
 
 
 };

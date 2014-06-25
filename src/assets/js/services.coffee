@@ -125,7 +125,7 @@ exports.TVDBService = ($log, $sails) ->
     getUpdates: getUpdates
   }
 
-exports.FilesService = ($log, $routeParams, $sails, async) ->
+exports.FilesService = ($log, $routeParams, $sails, $http, async, transport) ->
 
   getCurrentPath = () ->
     return if angular.isDefined($routeParams.path) then $routeParams.path else '/'
@@ -142,38 +142,78 @@ exports.FilesService = ($log, $routeParams, $sails, async) ->
     return '?path=' + path
 
   getFile = (path, cb) ->
-    $sails.get "/fs/detectFile"+getPathQueryString(path)
-      .success (response) ->
-        if angular.isDefined response.error
-          cb(response.error)
-        else
-          $log.debug response;
-          cb(null, response)
-      .error (response) ->
-        $log.error if response then angular.toJson response.error else "Can't detect file: "+path
-        cb(response.error, null)
+
+    url = "/fs/detectFile"+getPathQueryString(path)
+    # $log.debug url
+
+    switch transport
+      when 'socket'
+        $sails.get url
+          .success (response) ->
+            if angular.isDefined response.error
+              cb(response.error)
+            else
+              $log.debug response;
+              cb(null, response)
+          .error (response) ->
+            $log.error if response then angular.toJson response.error else "Can't detect file: "+path
+            cb(response.error, null)
+      else # http
+        $http {method: 'GET', url: url}
+          .success (data, status, headers, config) ->
+            if angular.isDefined data.error
+              cb(data.error)
+            else
+              # $log.debug data;
+              cb(null, data)
+          .error (data, status, headers, config) ->
+            error = "Can't detect file: "+path
+            cb(error, null)
 
   isHidden = (file) ->
     return angular.isUndefined(file) or angular.isUndefined(file.name) or file.name.charAt(0) == '.'
 
   exists = (path, cb) ->
-    $sails.get "/fs/exists"+getPathQueryString(path)
-      .success (response) ->
-        cb(null, response.exists)
-      .error (response) ->
-        cb(response, null)
+    url = "/fs/exists"+getPathQueryString(path)
+    # $log.debug url
+    switch transport
+      when 'socket'
+        $sails.get url
+          .success (response) ->
+            cb(null, response.exists)
+          .error (response) ->
+            cb(response, null)
+      else
+        $http {method: 'GET', url: url}
+          .success (data, status, headers, config) ->
+            cb(null, data.exists)
+          .error (data, status, headers, config) ->
+            cb(data, null)
 
   getFileList = (path, finalCallback) ->
-    # $log.debug "/fs/readdir?id="+path
-    $sails.get "/fs/readdir?id="+path
-      .success (response) ->
-        async.map response.files
-        , (fileName, callback) ->
-          callback null, {name: fileName}
-        , finalCallback
-      .error (response) ->
-        error = if response and response.error then response.error else "Can't read file dir "+path
-        finalCallback error
+    url = "/fs/readdir?path="+path
+    # $log.debug url
+    switch transport
+      when 'socket'
+        $sails.get url
+          .success (response) ->
+            async.map response.files
+            , (fileName, callback) ->
+              callback null, {name: fileName}
+            , finalCallback
+          .error (response) ->
+            error = if response and response.error then response.error else "Can't read file dir "+path
+            finalCallback error
+      else
+        $http {method: 'GET', url: url}
+          .success (data, status, headers, config) ->
+            async.map data.files
+            , (fileName, callback) ->
+              callback null, {name: fileName}
+            , finalCallback
+          .error (data, status, headers, config) ->
+            error = "Can't read file dir "+path
+            finalCallback error
 
   getJson = (path, cb) ->
     $sails.get "/fs/getJson"+getPathQueryString(path)
@@ -404,7 +444,7 @@ exports.FfplayPlayerService = ($log, $sails) ->
     resume: resume
   }
 
-exports.PlayerService = ($rootScope, $sails, $log, $interval, OmxPlayerService, FfplayPlayerService) ->
+exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, OmxPlayerService, FfplayPlayerService) ->
 
   $rootScope.player = {
     program: null # omxplayer | ffplay
@@ -502,45 +542,76 @@ exports.PlayerService = ($rootScope, $sails, $log, $interval, OmxPlayerService, 
         when 'pause' then stopTimer()
         when 'stop' then stopTimer()
       
-  $sails.get "/ffplay/info"
-    .success (response) ->
-      $log.debug response
-      updatePlayer (response.player)
-    .error (response) -> # FIXME
-      #updatePlayer (response.player)
-      $log.error response
+  switch transport
+    when 'socket'
+      $sails.get "/ffplay/info"
+        .success (response) ->
+          # $log.debug response
+          updatePlayer (response.player)
+        .error (response) ->
+          $log.error response
+    else
+      $http {method: 'GET', url: "/ffplay/info"}
+        .success (data, status, headers, config) ->
+          # $log.debug data
+          updatePlayer (data.player)
+        .error (data, status, headers, config) ->
+          $log.error data
 
   $sails.on 'start', (message) ->
     $log.debug '$sails.on start in PlayerService'
     updatePlayer (message.player)
+    $rootScope.$apply()
 
   $sails.on 'pause', (message) ->
     $log.debug '$sails.on pause in PlayerService'
     updatePlayer (message.player)
+    $rootScope.$apply()
 
   $sails.on 'resume', (message) ->
     $log.debug '$sails.on resume in PlayerService'
     updatePlayer (message.player)
+    $rootScope.$apply()
 
   $sails.on 'stop', (message) ->
     $log.debug '$sails.on stop in PlayerService'
     updatePlayer (message.player)
+    $rootScope.$apply()
 
   setAvailablePlayer = () ->
-    $sails.get "/os/program_exists?name=omxplayer"
-      .success (response) ->
-        if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
-          $rootScope.player.program = "omxplayer";
-          $log.debug "omxplayer is used"
-        else
-          $log.debug "omxplayer is not installed"
-          $sails.get "/os/program_exists?name=ffplay"
-            .success (response) ->
-              if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
-                $rootScope.player.program = "ffplay";
-                $log.debug "ffplay is used"
-              else
-                $log.debug "ffplay is not installed"
+    urlOmx = "/os/program_exists?name=omxplayer";
+    urlFfplay = "/os/program_exists?name=ffplay";
+    switch transport
+      when 'socket'
+        $sails.get urlOmx
+          .success (response) ->
+            if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
+              $rootScope.player.program = "omxplayer";
+              $log.debug "omxplayer is used"
+            else
+              # $log.debug "omxplayer is not installed"
+              $sails.get urlFfplay
+                .success (response) ->
+                  if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
+                    $rootScope.player.program = "ffplay";
+                    $log.debug "ffplay is used"
+                  else
+                    $log.error "ffplay is not installed"
+      else
+        $http {method: 'GET', url: urlOmx}
+          .success (response, status, headers, config) ->
+            if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
+              $rootScope.player.program = "omxplayer";
+              $log.debug "omxplayer is used"
+            else
+              # $log.debug "omxplayer is not installed"
+              $http {method: 'GET', url: urlFfplay}
+                .success (response, status, headers, config) ->
+                  if angular.isDefined(response) and angular.isDefined(response.exists) and response.exists == true
+                    $rootScope.player.program = "ffplay";
+                    $log.debug "ffplay is used"
+                  else
+                    $log.error "ffplay is not installed"
 
   start = (path, cb) ->
     # $log.debug "/ffplay/start?id="+path
@@ -554,14 +625,17 @@ exports.PlayerService = ($rootScope, $sails, $log, $interval, OmxPlayerService, 
       $log.error "no media player installed, please install omxplayer or ffplay"
 
   toogle_pause = () ->
-    # $log.debug "/ffplay/pause
-    if $rootScope.player.program == "omxplayer"
-      OmxPlayerService.toogle_pause (error) ->
-    else if $rootScope.player.program == "ffplay"
-      FfplayPlayerService.toggle_pause (error) ->
+    if $rootScope.player.status != 'stop'
+      # $log.debug "/ffplay/pause
+      if $rootScope.player.program == "omxplayer"
+        OmxPlayerService.toogle_pause (error) ->
+      else if $rootScope.player.program == "ffplay"
+        FfplayPlayerService.toggle_pause (error) ->
+      else
+        $log.error "no media player installed, please install omxplayer or ffplay"
     else
-      $log.error "no media player installed, please install omxplayer or ffplay"
-     
+     $log.error "no video to play"
+
   quit = () ->
     # $log.debug "/ffplay/quit
     if $rootScope.player.program == "omxplayer"

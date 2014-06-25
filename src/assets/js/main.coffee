@@ -30,6 +30,8 @@ MediaCenter = angular.module 'MediaCenter', [
   'angularMoment'
 ]
 
+MediaCenter.constant 'transport', 'socket' # http | socket
+
 MediaCenter.config routes.routeProvider
 MediaCenter.config routes.locationProvider 
 

@@ -1,5 +1,44 @@
-exports.IndexController = ($scope) ->
-  $scope.test = 'test';
+exports.IndexController = ($scope, $log, $sails, $http, $interval) ->
+
+  timer = null;
+
+  getUserHome = (callback) ->
+    url = "/os/home"
+    $http {method: 'GET', url: url}
+      .success (data, status, headers, config) ->
+        callback(null, data)
+      .error (data, status, headers, config) ->
+        callback(status)
+
+  getDeviceList = () ->
+    # $log.debug "/fs/readdir?path=/media"
+    url = "/fs/readdir?path=/media"
+    $http {method: 'GET', url: url}
+      .success (data, status, headers, config) ->
+        $scope.devices = data.files
+      .error (data, status, headers, config) ->
+        $log.error status
+
+    # $sails.get "/fs/readdir?path=/media"
+    #   .success (response) ->
+    #     $scope.devices = response.files
+    #     $log.debug response
+    #   .error (response) ->
+    #     $log.error response
+
+
+  getDeviceList()
+
+  getUserHome (error, data) ->
+    $scope.home = data
+
+  timer = $interval () ->
+    getDeviceList()
+  , 5000
+
+  $scope.$on '$destroy', () ->
+    if timer and timer != null
+      $interval.cancel(timer)
 
 exports.SailsController = ($scope) ->
   $scope.test = 'test';

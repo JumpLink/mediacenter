@@ -1,1 +1,21 @@
-| test
+navbar
+.container-fluid
+  .row
+    .col-xs-12.col-lg-12
+      h2
+        | Browse devices
+      ul.media-list
+        li.media(ng-repeat="device in devices")
+          a(ng-href="/files?path=/media/{{device}}")
+            .pull-left(href='#')
+              i.fa.fa-hdd-o(style="font-size: 40px; padding-right:10px;")
+            .media-body
+              h2.media-heading {{device}}
+      ul.media-list
+        li.media(ng-repeat="device in devices")
+          a(ng-href="/files?path={{home.dirname}}")
+            .pull-left(href='#')
+              i.fa.fa-home(style="font-size: 40px; padding-right:10px;")
+            .media-body
+              h2.media-heading {{home.username}}
+playcontrol
