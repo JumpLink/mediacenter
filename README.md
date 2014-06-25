@@ -34,6 +34,7 @@ a [Sails](http://sailsjs.org) application
 * Similar Projects
  * [PiR.tv](https://github.com/DonaldDerek/PiR.tv)
  * [angular-rpitv](https://github.com/viperfx/angular-rpitv)
+ * [ludovision](https://github.com/lamberta/ludovision)
 
 ## Bugs
  * https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261
