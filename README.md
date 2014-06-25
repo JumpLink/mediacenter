@@ -9,7 +9,7 @@ a [Sails](http://sailsjs.org) application
 
 ## Raspberry Pi
 * Install [Raspbian](http://www.raspbian.org/)
-* Set start LXDE on boot on install
+* Set start LXDE on boot
 * Setup WiFi/Ethernet
 * Install the [Ubuntu font](http://packages.ubuntu.com/en/trusty/all/ttf-ubuntu-font-family/download)
 
@@ -17,7 +17,7 @@ a [Sails](http://sailsjs.org) application
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
 ```
 #@lxpanel --profile LXDE
-#@pcmanfm --desktop --profile LXDE
+@pcmanfm --desktop --profile LXDE
 #@xscreensaver -no-splash
 @xset s off
 @xset -dpms
@@ -25,6 +25,7 @@ a [Sails](http://sailsjs.org) application
 @unclutter
 @sh -c 'cd /home/pi/mediacenter/src && node app.js'
 ```
+* Set pcmanf to automount devices and but not show them on mount.
 
 ## Links
 * [Build your own Google TV Using RaspberryPi, NodeJS and Socket.io](http://blog.donaldderek.com/2013/06/build-your-own-google-tv-using-raspberrypi-nodejs-and-socket-io/)
