@@ -11,6 +11,7 @@ a [Sails](http://sailsjs.org) application
 * Install [Raspbian](http://www.raspbian.org/)
 * Set start LXDE on boot on install
 * Setup WiFi/Ethernet
+* Install the [Ubuntu font](http://packages.ubuntu.com/en/trusty/all/ttf-ubuntu-font-family/download)
 
 ### Autostart
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
