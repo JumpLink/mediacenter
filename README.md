@@ -2,6 +2,22 @@
 
 a [Sails](http://sailsjs.org) application
 
+# Install
+## Raspberry Pi
+* Install [Raspbian](http://www.raspbian.org/)
+* Set start LXDE on boot on install
+* Setup WiFi/Ethernet
+* Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
+```
+#@lxpanel --profile LXDE
+#@pcmanfm --desktop --profile LXDE
+#@xscreensaver -no-splash
+@xset s off
+@xset -dpms
+@xset s noblank
+@sh -c 'cd /home/pi/mediacenter/src && node app.js'
+```
+
 ## Links
 * [Build your own Google TV Using RaspberryPi, NodeJS and Socket.io](http://blog.donaldderek.com/2013/06/build-your-own-google-tv-using-raspberrypi-nodejs-and-socket-io/)
 * [Designing For TV](https://developers.google.com/tv/web/docs/design_for_tv)
