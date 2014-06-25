@@ -1,31 +1,39 @@
-exports.IndexController = ($scope, $log, $sails, $http, $interval) ->
+exports.IndexController = ($scope, $log, $sails, $http, transport, $interval) ->
 
   timer = null;
 
   getUserHome = (callback) ->
     url = "/os/home"
-    $http {method: 'GET', url: url}
-      .success (data, status, headers, config) ->
-        callback(null, data)
-      .error (data, status, headers, config) ->
-        callback(status)
+    switch transport
+      when 'socket'
+        $sails.get url
+          .success (response) ->
+            callback(null, response)
+          .error (response) ->
+            callback(response)
+      else
+        $http {method: 'GET', url: url}
+          .success (data, status, headers, config) ->
+            callback(null, data)
+          .error (data, status, headers, config) ->
+            callback(data)
 
   getDeviceList = () ->
-    # $log.debug "/fs/readdir?path=/media"
     url = "/fs/readdir?path=/media"
-    $http {method: 'GET', url: url}
-      .success (data, status, headers, config) ->
-        $scope.devices = data.files
-      .error (data, status, headers, config) ->
-        $log.error status
-
-    # $sails.get "/fs/readdir?path=/media"
-    #   .success (response) ->
-    #     $scope.devices = response.files
-    #     $log.debug response
-    #   .error (response) ->
-    #     $log.error response
-
+    switch transport
+      when 'socket'
+        $sails.get "/fs/readdir?path=/media"
+          .success (response) ->
+            $scope.devices = response.files
+            $log.debug response
+          .error (response) ->
+            $log.error response
+      else
+        $http {method: 'GET', url: url}
+          .success (data, status, headers, config) ->
+            $scope.devices = data.files
+          .error (data, status, headers, config) ->
+            $log.error data
 
   getDeviceList()
 
