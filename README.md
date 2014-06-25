@@ -3,10 +3,16 @@
 a [Sails](http://sailsjs.org) application
 
 # Install
+
+## Hide mouse
+```sudo apt-get install unclutter```
+
 ## Raspberry Pi
 * Install [Raspbian](http://www.raspbian.org/)
 * Set start LXDE on boot on install
 * Setup WiFi/Ethernet
+
+### Autostart
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
 ```
 #@lxpanel --profile LXDE
@@ -15,6 +21,7 @@ a [Sails](http://sailsjs.org) application
 @xset s off
 @xset -dpms
 @xset s noblank
+@unclutter
 @sh -c 'cd /home/pi/mediacenter/src && node app.js'
 ```
 
