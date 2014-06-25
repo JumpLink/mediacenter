@@ -37,6 +37,7 @@ MediaCenter.config routes.locationProvider
 
 # MediaCenter.provider '$sails', services.sails(io)
 MediaCenter.service 'FilesService', services.FilesService
+MediaCenter.service 'TMDBService', services.TMDBService
 MediaCenter.service 'TVDBService', services.TVDBService
 MediaCenter.service 'OmxPlayerService', services.OmxPlayerService
 MediaCenter.service 'FfplayPlayerService', services.FfplayPlayerService

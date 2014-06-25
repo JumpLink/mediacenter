@@ -1,3 +1,75 @@
+exports.TMDBService = ($log, $sails, $rootScope) ->
+
+  _normalize = (video, cb) ->
+    angular.forEach video, (value, key) ->
+      if key == 'backdrop_path' && value?
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.backdrop_sizes[$rootScope.tmdb.config.images.backdrop_sizes.length - 2] + value
+      if key == 'poster_path' && value?
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.poster_sizes[$rootScope.tmdb.config.images.poster_sizes.length - 2] + value
+      if key == 'logo_path' && value?
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.logo_sizes[$rootScope.tmdb.config.images.logo_sizes.length - 2] + value
+      if key == 'profile_path' && value?
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.profile_sizes[$rootScope.tmdb.config.images.profile_sizes.length - 2] + value
+      if key == 'still_path' && value?
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.still_sizes[$rootScope.tmdb.config.images.still_sizes.length - 2] + value
+    cb null, video
+
+  normalize = (video, cb) ->
+    configuration (error, config) ->
+      if error?
+        cb error
+      else
+        _normalize video, cb
+
+  configuration = (cb) ->
+    if angular.isUndefined $rootScope.tmdb
+      $sails.get "/tmdb/configuration"
+        .success (response) ->
+          if angular.isDefined response.error
+            $log.error response.error
+            cb(response)
+          else
+            $rootScope.tmdb = {
+              config: response
+            }
+            cb(null, $rootScope.tmdb.config) # okay
+        .error (response) ->
+          $log.error if response then angular.toJson response.error else "Can't get popular tv shows"
+          cb(response.error, null)
+    else
+      cb null, $rootScope.tmdb.config
+
+  miscPopularMovies = (cb) ->
+    $sails.get "/tmdb/miscPopularMovies"
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't get popular movies"
+        cb(response.error, null)
+
+  miscPopularTvs = (cb) ->
+    $sails.get "/tmdb/miscPopularTvs"
+      .success (response) ->
+        if angular.isDefined response.error
+          $log.error response.error
+          cb(response)
+        else
+          cb(null, response) # okay
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't get popular tv shows"
+        cb(response.error, null)
+
+  return {
+    miscPopularMovies: miscPopularMovies
+    miscPopularTvs: miscPopularTvs
+    configuration: configuration
+    normalize: normalize
+  }
+
 exports.TVDBService = ($log, $sails) ->
 
   getLanguages = (cb) ->

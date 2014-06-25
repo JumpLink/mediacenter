@@ -115,3 +115,7 @@ npm-debug.log
 nbproject
 .idea
 .node_history
+
+# unfree stuff
+src/assets/images/wallpaper/*.jpg
+src/assets/images/wallpaper/*.png

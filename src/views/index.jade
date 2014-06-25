@@ -29,8 +29,7 @@ html(lang="en", ng-app="MediaCenter")
     script(type="text/ng-template", id="directives/video-file"): include directives/video-file.jade
     script(type="text/ng-template", id="directives/playcontrol"): include directives/playcontrol.jade
 
-  body
-    div(ng-view)
+  body(class="{{$root.bodylayout}}", ng-view)
     script(type="text/javascript", src="/third-party/angular/angular.js")
     script(type="text/javascript", src="/third-party/angular-route/angular-route.js")
 

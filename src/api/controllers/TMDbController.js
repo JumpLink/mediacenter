@@ -20,6 +20,20 @@ module.exports = {
     });
   }
 
+  , miscPopularMovies: function (req, res) {
+    mdb.miscPopularMovies(function(error, result) {
+      if(error) return res.serverError(error);
+      else return res.json(result);
+    });
+  }
+
+  , miscPopularTvs: function (req, res) {
+    mdb.miscPopularTvs(function(error, result) {
+      if(error) return res.serverError(error);
+      else return res.json(result);
+    });
+  }
+
   /**
    * `FilesController.detectFile()`
    */

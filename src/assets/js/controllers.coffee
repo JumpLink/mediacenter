@@ -51,7 +51,10 @@ exports.IndexController = ($scope, $log, $sails, $http, transport, $interval) ->
 exports.SailsController = ($scope) ->
   $scope.test = 'test';
 
-exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
+exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, $interval, TMDBService) ->
+
+  timer = null
+
   $sails.get "/os/ifaces"
     .success (response) ->
       $scope.addresses = {}
@@ -64,10 +67,46 @@ exports.ServerController = ($scope, $sails, $location, $log, $interval) ->
     .error (response) ->
       $log.error if response then angular.toJson response.error else "Can't read file dir "+currentPath
 
+
+  getQuoteOfTheDay = () ->
+    url = "http://www.iheartquotes.com/api/v1/random?format=json";
+    $http {method: 'GET', url: url}
+    .success (data) ->
+      $scope.quote = data
+      $log.debug data
+
+  getPopularMovie = () ->
+    TMDBService.miscPopularMovies (error, data) ->
+      if error != null
+        $log.error error
+      else if angular.isDefined data.results
+        randomIndex = Math.floor((Math.random() * data.results.length))
+        TMDBService.normalize data.results[randomIndex], (error, movie) ->
+          $scope.movie = movie
+          $log.debug $scope.movie
+
+  miscPopularTvs = () ->
+    TMDBService.miscPopularTvs (error, data) ->
+      if error != null
+        $log.error error
+      else if angular.isDefined data.results
+        randomIndex = Math.floor((Math.random() * data.results.length))
+        TMDBService.normalize data.results[randomIndex], (error, tv) ->
+          $scope.tv = tv
+          $log.debug $scope.tv
+
+  getPopularMovie()
+
+  miscPopularTvs();
+
+  # getQuoteOfTheDay()
+
   $scope.port = $location.port()
 
+  $rootScope.bodylayout = "server";
+
   
-  $interval () ->
+  timer = $interval () ->
     $scope.moment = moment()
   , 1000
 
