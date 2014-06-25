@@ -9,18 +9,18 @@
   .row
     .col-xs-12.col-md-4.center-block(ng-repeat="(name, address) in addresses")
       .img-thumbnail.img-responsive.text-center
-        qrcode(data="{{address.address}}:{{port}}", size="300")
         h4 {{address.address}}:{{port}}
+        qrcode(data="{{address.address}}:{{port}}", size="300")
     .col-xs-12.col-md-8
       .row
         .col-md-6(ng-if="tv.poster_path")
           .popular.img-thumbnail.img-responsive.text-center
-            img(ng-src="{{tv.poster_path}}", alt="")
             h4 {{tv.original_name}}
+            img(ng-src="{{tv.poster_path}}", alt="")
         .col-md-6(ng-if="movie.poster_path")
           .popular.img-thumbnail.img-responsive.text-center
-            img(ng-src="{{movie.poster_path}}", alt="")
             h4 {{movie.original_title}}
+            img(ng-src="{{movie.poster_path}}", alt="")
     //- .col-md-12.text-right
     //-   .time {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
 nav.navbar.navbar-inverse.navbar-fixed-bottom

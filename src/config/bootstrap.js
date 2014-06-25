@@ -69,6 +69,7 @@ var startKioskBrowser = function () {
 var printServerDetails = function () {
   if(sails.config.printServerDetails.start) {
     setTimeout(function(){
+      var count = 0;
       var ifaces = os.networkInterfaces();
       // sails.log.debug(ifaces);
       Object.keys(ifaces).forEach(function(key) {
@@ -76,10 +77,10 @@ var printServerDetails = function () {
           var dev = ifaces[key];
           // sails.log.debug(key);
           // sails.log.debug(dev);
-
           dev.forEach(function(addressObject) {
             // sails.log.debug(addressObject);
             if(addressObject.family == 'IPv4') {
+              count++;
               console.log("");
               sails.log.info("To control your mediacenter, visit http://"+addressObject.address+":"+sails.config.port+" with your browser.");
               sails.log.info("")
@@ -95,6 +96,8 @@ var printServerDetails = function () {
           });
         }
       });
+      if(count <= 0)
+        sails.log.error ("You have no connection to your ethernet, check your wlan!")
     }, sails.config.printServerDetails.timeout);
   }
 }

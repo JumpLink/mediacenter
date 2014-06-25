@@ -16,7 +16,12 @@ module.exports = {
    * `SystemController.readdir()`
    */
   ifaces: function (req, res) {
-    var ifaces = os.networkInterfaces();
+    var ifaces = null;
+    try {
+      ifaces = os.networkInterfaces();
+    } catch (error) {
+      return res.serverError(error);
+    }
     return res.json(ifaces);
   }
 
