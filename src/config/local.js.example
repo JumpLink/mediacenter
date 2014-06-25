@@ -56,10 +56,20 @@ module.exports = {
   },
 
   TVDB: {
-    key: 'insert your theTVDB api key here'
+    key: 'insert your TVDB api key here'
   },
   
-
+  // start a browser in kiosk mode
+  kioskBrowser : {
+    start: true,
+    timeout: 50000
+  },
+  
+  // print server details
+  printServerDetails : {
+    start: true,
+    timeout: 10000
+  },
 
 
   // The runtime "environment" of your Sails app is either 'development' or 'production'.
