@@ -45,7 +45,7 @@ module.exports = {
   , program_exists: function (req, res) {
     var name = req.param('id') ? req.param('id') : req.param('name') ? req.param('name') : null;
     if (name != null) {
-      var child = exec("command -v "+name, function (error, stdout, stderr) {
+      var child = exec("command -v "+name, {env: {DISPLAY: ':0.0'}}, function (error, stdout, stderr) {
         // sails.log.debug(error);
         return res.json({exists:!error});
       });
@@ -57,8 +57,5 @@ module.exports = {
   , home: function (req, res) {
     return res.json({dirname: process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'], username: process.env['USER']});
   }
-
-
-
 };
 
