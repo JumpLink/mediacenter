@@ -31,8 +31,8 @@
     "omxcontrol": "git://github.com/JumpLink/omxcontrol",
     "qrcode-terminal": "^0.9.4",
     "rc": "^0.3.5",
-    "sails": "^0.10.0-rc8",
-    "sails-disk": "~0.10.0",
+    "sails": "0.10.*",
+    "sails-disk": "~0.10.*",
     "tvdb": "0.0.13"
   },
   "optionalDependencies": {
