@@ -44,6 +44,10 @@ var getCPUArch = function (cb) {
   });
 }
 
+var stopKioskBrowser = function (arch, cb) {
+  exec('killall browser_'+arch, cb);
+}
+
 var startKioskBrowser = function () {
   if(sails.config.kioskBrowser.start) {
     setTimeout(function(){
@@ -53,8 +57,9 @@ var startKioskBrowser = function () {
           sails.log.debug(arch);
           var browser = Path.normalize(__dirname + "/../../bin/browser_"+arch);
           sails.log.debug(browser);
-          spawn(browser, ['http://localhost:'+sails.config.port+"/server"], {stdio: [ 'ignore', 'ignore', 'ignore' ], env: {DISPLAY: ':0.0'}});
-          //exec(browser+'http://localhost:'+sails.config.port+"/server", {env: {DISPLAY: ':0.0'}});
+          stopKioskBrowser (arch, function (error, stdout, stderr) {
+            spawn(browser, ['http://localhost:'+sails.config.port+"/server"], {stdio: [ 'ignore', 'ignore', 'ignore' ], env: {DISPLAY: ':0.0'}});
+          });
         } 
       });
     }, sails.config.kioskBrowser.timeout);
