@@ -10,11 +10,10 @@
  */
 
 var exec = require('child_process').exec;
-var os=require('os');
+var os = require('os');
 var qrcode = require('qrcode-terminal');
 var Path = require('path');
 var spawn = require('child_process').spawn
-//var exec = require('child_process').exec
 
 var checkConfig = function (cb) {
   if(typeof sails.config.TMDb == 'undefined')
@@ -60,10 +59,28 @@ var startKioskBrowser = function () {
       });
     }, sails.config.kioskBrowser.timeout);
   }
-
-  
   // var browser = __dirname + "../bin/"
+}
 
+testNetwork = function (cb) {
+  NetService.hasConnection ('www.google.com', function (connected) {
+    if(!connected) {
+      sails.log.error ("You have lost your internet connection, try to reconnect..");
+      NetService.reconnect('wlan0', function (error) {
+        NetService.reconnect('eth0', function (error) {
+          if(cb) cb();
+        });
+      });
+      
+    }
+  });
+}
+
+var maintainNetwork = function (dev, cb) {
+  testNetwork();
+  setInterval(function() {
+    testNetwork(cb);
+  }, 60000 );
 }
 
 var printServerDetails = function () {
@@ -109,6 +126,8 @@ module.exports.bootstrap = function(cb) {
 
   printServerDetails();
   startKioskBrowser();
+  maintainNetwork();
+
   checkConfig(function (error) {
     cb();
   })

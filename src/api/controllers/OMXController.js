@@ -9,8 +9,6 @@ var Omx = require('omxcontrol');
 var omx = new Omx();
 var Path = require('path')
 
-sails.log.error(omx);
-
 omx.on('start', function (filename) {
   sails.log.debug('omxplayer event: start');
   PlayerService.onStart(filename);
