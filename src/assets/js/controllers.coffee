@@ -103,11 +103,11 @@ exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, 
 
   getPopularMovie()
   miscPopularTvs()
-  
+
   popularTimer = $interval () ->
     getPopularMovie()
     miscPopularTvs()
-  , 10000
+  , 60000
 
   # getQuoteOfTheDay()
 

@@ -5,7 +5,7 @@ exports.TMDBService = ($log, $sails, $rootScope) ->
       if key == 'backdrop_path' && value?
         video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.backdrop_sizes[$rootScope.tmdb.config.images.backdrop_sizes.length - 2] + value
       if key == 'poster_path' && value?
-        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.poster_sizes[$rootScope.tmdb.config.images.poster_sizes.length - 2] + value
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.poster_sizes[0] + value
       if key == 'logo_path' && value?
         video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.logo_sizes[$rootScope.tmdb.config.images.logo_sizes.length - 2] + value
       if key == 'profile_path' && value?
