@@ -35,20 +35,23 @@ module.exports = {
   , reboot: function (req, res) {
     return res.ok();
   }
-
+  , exec: function (req, res) {
+    var name = req.param('name');
+    exec(name, function (error, stdout, stderr) {
+      if(error) sails.log.error(error);
+    });
+    return res.ok();
+  }
   , program_exists: function (req, res) {
     var name = req.param('id') ? req.param('id') : req.param('name') ? req.param('name') : null;
     if (name != null) {
       var child = exec("command -v "+name, function (error, stdout, stderr) {
-        sails.log.debug(error);
+        // sails.log.debug(error);
         return res.json({exists:!error});
       });
-      
-      
     } else {
       return res.serverError("No program");
     }
-    
   }
 
   , home: function (req, res) {

@@ -27,5 +27,7 @@ nav.navbar.navbar-inverse.navbar-fixed-bottom
   .container
     .navbar-header
       .navbar-brand Benthe's MediaCenter
+    button.btn.btn-invert.btn-trans.navbar-btn.navbar-right(style="margin-left: 15px;", ng-click="openWiFiConfig()")
+      i.fa.fa-cog
     .navbar-text.navbar-right
       | {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}

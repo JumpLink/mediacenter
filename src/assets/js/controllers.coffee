@@ -54,6 +54,7 @@ exports.SailsController = ($scope) ->
 exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, $interval, TMDBService) ->
 
   timer = null
+  popularTimer = null
 
   $sails.get "/os/ifaces"
     .success (response) ->
@@ -63,10 +64,14 @@ exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, 
           angular.forEach dev, (addressObject, index) ->
             if addressObject.family == 'IPv4'
               $scope.addresses[name] = addressObject
-
     .error (response) ->
       $log.error if response then angular.toJson response.error else "Can't read file dir "+currentPath
 
+
+  $scope.openWiFiConfig = () ->
+    $sails.get "/os/exec?name=/usr/sbin/wpa_gui"
+      .success (response) ->
+        $log.info "openen WiFi Config"
 
   getQuoteOfTheDay = () ->
     url = "http://www.iheartquotes.com/api/v1/random?format=json";
@@ -95,9 +100,14 @@ exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, 
           $scope.tv = tv
           $log.debug $scope.tv
 
-  getPopularMovie()
 
-  miscPopularTvs();
+  getPopularMovie()
+  miscPopularTvs()
+  
+  popularTimer = $interval () ->
+    getPopularMovie()
+    miscPopularTvs()
+  , 10000
 
   # getQuoteOfTheDay()
 
