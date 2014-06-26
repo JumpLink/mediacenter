@@ -492,9 +492,9 @@ exports.FfplayPlayerService = ($log, $sails) ->
       .error (response) ->
         cb(response);
 
-  quit = (cb) ->
+  stop = (cb) ->
     # $log.debug "/ffplay/quit
-    $sails.get "/ffplay/quit"
+    $sails.get "/ffplay/stop"
       .success (response) ->
         cb(null);
       .error (response) ->
@@ -512,7 +512,8 @@ exports.FfplayPlayerService = ($log, $sails) ->
     start: start
     pause: pause
     toggle_pause: toggle_pause
-    quit: quit
+    quit: stop
+    stop: stop
     resume: resume
   }
 
@@ -702,8 +703,7 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
                   else
                     $log.error "ffplay is not installed"
 
-  start = (path, cb) ->
-    # $log.debug "/ffplay/start?id="+path
+  _start = (path, cb) ->
     if $rootScope.player.program == "omxplayer"
       OmxPlayerService.start(path, cb)
       $rootScope.player.status = 'play'
@@ -711,7 +711,17 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
       FfplayPlayerService.start(path, cb)
       $rootScope.player.status = 'play'
     else
-      $log.error "no media player installed, please install omxplayer or ffplay"
+      $log.error "no media player installed, please install omxplayer or ffplay"               
+
+  start = (path, cb) ->
+    if $rootScope.player.status != 'stop'
+      quit (error) ->
+        if error
+          cb
+        else
+          _start path, cb
+    else
+      _start path, cb
 
   toogle_pause = () ->
     if $rootScope.player.status != 'stop'
@@ -725,12 +735,12 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
     else
      $log.error "no video to play"
 
-  quit = () ->
+  quit = (cb) ->
     # $log.debug "/ffplay/quit
     if $rootScope.player.program == "omxplayer"
-      OmxPlayerService.quit (error) ->
+      OmxPlayerService.quit cb
     else if $rootScope.player.program == "ffplay"
-      $log.error "command not available for ffplay";
+      FfplayPlayerService.quit cb
     else
       $log.error "no media player installed, please install omxplayer or ffplay"
      

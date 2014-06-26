@@ -5,10 +5,96 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-
-
-var omx = require('omxcontrol');
+var Omx = require('omxcontrol');
+var omx = new Omx();
 var Path = require('path')
+
+sails.log.error(omx);
+
+omx.on('start', function (filename) {
+  sails.log.debug('omxplayer event: start');
+  PlayerService.onStart(filename);
+});
+
+omx.on('pause', function (stream) {
+  sails.log.debug('omxplayer event: pause');
+  PlayerService.onPause();
+});
+
+omx.on('resume', function (stream) {
+  sails.log.debug('omxplayer event: resume');
+  PlayerService.onResume();
+}); 
+
+omx.on('stop', function (stream) {
+  sails.log.debug('omxplayer event: stop');
+  PlayerService.onStop();
+});
+
+omx.on('complete', function (stream) {
+  sails.log.debug('omxplayer event: complete');
+  PlayerService.onStop();
+});
+
+omx.on('volume_up', function (stream) {
+  sails.log.debug('omxplayer event: volume_up');
+  PlayerService.onVolumeUp();
+});
+
+omx.on('volume_down', function (stream) {
+  sails.log.debug('omxplayer event: volume_down');
+  PlayerService.onVolumeDown();
+});
+
+omx.on('forward', function (stream) {
+  sails.log.debug('omxplayer event: forward');
+  PlayerService.onForward();
+});
+
+omx.on('backward', function (stream) {
+  sails.log.debug('omxplayer event: backward');
+  PlayerService.onBackward();
+});
+
+omx.on('next_subtitle', function (stream) {
+  sails.log.debug('omxplayer event: next_subtitle');
+  PlayerService.onNextSubtitle();
+});
+
+omx.on('previous_subtitle', function (stream) {
+  sails.log.debug('omxplayer event: previous_subtitle');
+  PlayerService.onPreviousSubtitle();
+});
+
+omx.on('next_chapter', function (stream) {
+  sails.log.debug('omxplayer event: next_chapter');
+  PlayerService.onNextChapter();
+});
+
+omx.on('previous_chapter', function (stream) {
+  sails.log.debug('omxplayer event: previous_chapter');
+  PlayerService.onPreviousChapter();
+});
+
+omx.on('next_audio', function (stream) {
+  sails.log.debug('omxplayer event: next_audio');
+  PlayerService.onNextAudio();
+});
+
+omx.on('previous_audio', function (stream) {
+  sails.log.debug('omxplayer event: previous_audio');
+  PlayerService.onPreviousAudio();
+});
+
+omx.on('increase_speed', function (stream) {
+  sails.log.debug('omxplayer event: increase_speed');
+  PlayerService.onIncreaseSpeed();
+});
+
+omx.on('decrease_speed', function (stream) {
+  sails.log.debug('omxplayer event: decrease_speed');
+  PlayerService.onDecreaseSpeed();
+});
 
 module.exports = {
   /**
