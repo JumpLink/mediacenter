@@ -30,11 +30,19 @@ module.exports = {
    * TODO http://linux.byexamples.com/archives/315/how-to-shutdown-and-reboot-without-sudo-password/
    */
   , halt: function (req, res) {
+    exec('sudo shutdown -h now', function (error, stdout, stderr) {
+      if(error) sails.log.error(error);
+    });
     return res.ok();
   }
+
   , reboot: function (req, res) {
+    exec('sudo shutdown -r now', function (error, stdout, stderr) {
+      if(error) sails.log.error(error);
+    });
     return res.ok();
   }
+
   , exec: function (req, res) {
     var name = req.param('name');
     exec(name, function (error, stdout, stderr) {
@@ -42,6 +50,7 @@ module.exports = {
     });
     return res.ok();
   }
+
   , program_exists: function (req, res) {
     var name = req.param('id') ? req.param('id') : req.param('name') ? req.param('name') : null;
     if (name != null) {

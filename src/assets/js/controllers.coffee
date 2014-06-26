@@ -51,21 +51,22 @@ exports.IndexController = ($scope, $log, $sails, $http, transport, $interval) ->
 exports.SailsController = ($scope) ->
   $scope.test = 'test';
 
-exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, $interval, TMDBService) ->
+exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, $interval, TMDBService, PlayerService) ->
 
   timer = null
   popularTimer = null
 
-  $sails.get "/os/ifaces"
-    .success (response) ->
-      $scope.addresses = {}
-      angular.forEach response, (dev, name) ->
-        if name != 'lo'
-          angular.forEach dev, (addressObject, index) ->
-            if addressObject.family == 'IPv4'
-              $scope.addresses[name] = addressObject
-    .error (response) ->
-      $log.error if response then angular.toJson response.error else "Can't read file dir "+currentPath
+  getIPs = () ->
+    $sails.get "/os/ifaces"
+      .success (response) ->
+        $scope.addresses = {}
+        angular.forEach response, (dev, name) ->
+          if name != 'lo'
+            angular.forEach dev, (addressObject, index) ->
+              if addressObject.family == 'IPv4'
+                $scope.addresses[name] = addressObject
+      .error (response) ->
+        $log.error if response then angular.toJson response.error else "Can't read file dir "+currentPath
 
 
   $scope.openWiFiConfig = () ->
@@ -100,25 +101,73 @@ exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, 
           $scope.tv = tv
           $log.debug $scope.tv
 
+  play = () ->
+    $rootScope.bodylayout = "server play";
 
+    if(timer != null)
+      $interval.cancel(timer);
+
+    if(popularTimer != null)
+      $interval.cancel(popularTimer);
+
+  stop = () ->
+    $rootScope.bodylayout = "server stop";
+
+    timer = $interval () ->
+      $scope.moment = moment()
+    , 1000
+
+    popularTimer = $interval () ->
+      getPopularMovie()
+      miscPopularTvs()
+    , 60000
+
+  pause = () ->
+    $rootScope.bodylayout = "server pause";
+
+  resume = () ->
+    $rootScope.bodylayout = "server play";
+
+  stop()
   getPopularMovie()
   miscPopularTvs()
-
-  popularTimer = $interval () ->
-    getPopularMovie()
-    miscPopularTvs()
-  , 60000
+  getIPs()
 
   # getQuoteOfTheDay()
 
   $scope.port = $location.port()
 
-  $rootScope.bodylayout = "server";
 
-  
-  timer = $interval () ->
-    $scope.moment = moment()
-  , 1000
+  ### IMPORTANT NOTE you need to have PlayerService injected to watch this scope ###
+  $rootScope.$watch 'player.status', (newValue, oldValue) ->
+    $log.debug newValue
+    switch newValue
+      when 'play'
+        play()
+      when 'pause'
+        pause()
+      when 'stop'
+        stop()
+    
+  # $sails.on 'start', (message) ->
+  #   $log.debug '$sails.on start in ServerController'
+  #   play()
+  #   $rootScope.$apply()
+
+  # $sails.on 'pause', (message) ->
+  #   $log.debug '$sails.on pause in ServerController'
+  #   pause()
+  #   $rootScope.$apply()
+
+  # $sails.on 'resume', (message) ->
+  #   $log.debug '$sails.on resume in ServerController'
+  #   resume()
+  #   $rootScope.$apply()
+
+  # $sails.on 'stop', (message) ->
+  #   $log.debug '$sails.on stop in ServerController'
+  #   stop()
+  #   $rootScope.$apply()
 
 exports.FileInfoController = ($rootScope, $scope, $log, FilesService, $routeParams, PlayerService) ->
   # TODO optimieren erst zum schluss

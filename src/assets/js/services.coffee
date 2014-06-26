@@ -5,7 +5,7 @@ exports.TMDBService = ($log, $sails, $rootScope) ->
       if key == 'backdrop_path' && value?
         video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.backdrop_sizes[$rootScope.tmdb.config.images.backdrop_sizes.length - 2] + value
       if key == 'poster_path' && value?
-        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.poster_sizes[0] + value
+        video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.poster_sizes[3] + value
       if key == 'logo_path' && value?
         video[key] = $rootScope.tmdb.config.images.base_url + $rootScope.tmdb.config.images.logo_sizes[$rootScope.tmdb.config.images.logo_sizes.length - 2] + value
       if key == 'profile_path' && value?
@@ -521,6 +521,9 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
   $rootScope.player = {
     program: null # omxplayer | ffplay
     status: 'stop' # stop | play | pause
+    isPlay: false
+    isStop: true
+    isPause: false
     duration: null
     start: null
   }
@@ -581,6 +584,20 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
 
   updatePlayer = (newValue) ->
     angular.extend $rootScope.player, newValue
+    switch newValue.status
+      when 'stop'
+        $rootScope.player.isStop = true
+        $rootScope.player.isPause = false
+        $rootScope.player.isPlay = false
+      when 'play'
+        $rootScope.player.isStop = false
+        $rootScope.player.isPause = false
+        $rootScope.player.isPlay = true
+      when 'pause'
+        $rootScope.player.isStop = false
+        $rootScope.player.isPause = true
+        $rootScope.player.isPlay = false
+    
 
   $rootScope.$watch 'player.file.metadata.format.duration', (newValue, oldValue) ->
     $log.debug 'change player.file.metadata.format.duration' 

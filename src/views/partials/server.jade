@@ -1,33 +1,25 @@
-//- nav.navbar.navbar-inverse.navbar-fixed-bottom
-//-   .container
-//-     .navbar-header
-//-       .navbar-brand MediaCenter
-//-     .navbar-text.navbar-right
-//-       {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
-//- .container-fluid
-.container
-  .row
-    .col-xs-12.col-md-4.center-block(ng-repeat="(name, address) in addresses")
-      .img-thumbnail.img-responsive.text-center
-        h4 {{address.address}}:{{port}}
-        qrcode(data="{{address.address}}:{{port}}", size="300")
-    .col-xs-12.col-md-8
-      .row
-        .col-md-6(ng-if="tv.poster_path")
-          .popular.img-thumbnail.img-responsive.text-center
-            h4 {{tv.original_name}}
-            img(ng-src="{{tv.poster_path}}", alt="")
-        .col-md-6(ng-if="movie.poster_path")
-          .popular.img-thumbnail.img-responsive.text-center
-            h4 {{movie.original_title}}
-            img(ng-src="{{movie.poster_path}}", alt="")
-    //- .col-md-12.text-right
-    //-   .time {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
-nav.navbar.navbar-inverse.navbar-fixed-bottom
+div(ng-if="$root.player.isStop")
   .container
-    .navbar-header
-      .navbar-brand Benthe's MediaCenter
-    button.btn.btn-invert.btn-trans.navbar-btn.navbar-right(style="margin-left: 15px;", ng-click="openWiFiConfig()")
-      i.fa.fa-cog
-    .navbar-text.navbar-right
-      | {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
+    .row
+      .col-xs-12.col-md-4.center-block(ng-repeat="(name, address) in addresses")
+        .img-thumbnail.img-responsive.text-center
+          h4 {{address.address}}:{{port}}
+          qrcode(data="{{address.address}}:{{port}}", size="300")
+      .col-xs-12.col-md-8
+        .row
+          .col-md-6(ng-if="tv.poster_path")
+            .popular.img-thumbnail.img-responsive.text-center
+              h4 {{tv.original_name}}
+              img(ng-src="{{tv.poster_path}}", alt="")
+          .col-md-6(ng-if="movie.poster_path")
+            .popular.img-thumbnail.img-responsive.text-center
+              h4 {{movie.original_title}}
+              img(ng-src="{{movie.poster_path}}", alt="")
+  nav.navbar.navbar-inverse.navbar-fixed-bottom
+    .container
+      .navbar-header
+        .navbar-brand Benthe's MediaCenter
+      button.btn.btn-invert.btn-trans.navbar-btn.navbar-right(style="margin-left: 15px;", ng-click="openWiFiConfig()")
+        i.fa.fa-cog
+      .navbar-text.navbar-right
+        | {{moment | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
