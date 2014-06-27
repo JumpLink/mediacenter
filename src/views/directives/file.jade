@@ -1,30 +1,39 @@
-.col-xs-12.col-sm-6.col-lg-3(ng-if="!isHidden()", ng-switch on="file.mediatype" class="{{file.mediatype}} {{file.subtype}}")
-  div(ng-switch-when="inode")
-    a(ng-href="{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-folder
-      |  {{file.name}}
-  div(ng-switch-when="video")
-    videofile(data-file="file")
-  div(ng-switch-when="image")
-    a(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-file-image-o
-      |  {{file.name}}
-  div(ng-switch-when="text")
-    a(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-file-text-o
-      |  {{file.name}}
-  div(ng-switch-when="audio")
-    a(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-file-audio-o
-      |  {{file.name}}
-  div(ng-switch-when="application" ng-switch on="file.subtype")
-    a(ng-switch-when="x-rar", ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-file-archive-o
-      |  {{file.name}}
-    a(ng-switch-default, ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-file-o
-      |  {{file.name}}
-  div(ng-switch-default)
-    a(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
-      i.fa.fa-file
-      |  {{file.name}}
+.col-xs-12.col-sm-12.col-lg-12(ng-if="show()", ng-switch on="file.mediatype" class="{{file.mediatype}} {{file.subtype}}")
+  ul.media-list.files
+    li.media(ng-switch-when="inode")
+      a.pull-left(ng-href="{{getPathQueryString()}}", title="{{file.name}}")
+        i.fa.fa-folder
+      //- .pull-right(ng-click="toggle_pause()")
+      //-   i.fa.fa-play
+      a.media-body(ng-href="{{getPathQueryString()}}", title="{{file.name}}")
+        |  {{file.name}}
+    li.media(ng-switch-when="video")
+      videofile(data-file="file")
+    li.media(ng-switch-when="image")
+      a.pull-left(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        i.fa.fa-file-image-o
+      //- .pull-right(ng-click="toggle_pause()")
+      //-   i.fa.fa-play
+      a.media-body(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        |  {{file.name}}
+    li.media(ng-switch-when="text")
+      a.pull-left(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        i.fa.fa-file-text-o
+      //- .pull-right(ng-click="toggle_pause()")
+      //-   i.fa.fa-play
+      a.media-body(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        |  {{file.name}}
+    li.media(ng-switch-when="audio")
+      a.pull-left(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        i.fa.fa-file-audio-o
+      //- .pull-right(ng-click="toggle_pause()")
+      //-   i.fa.fa-play
+      a.media-body(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        |  {{file.name}}
+    li.media(ng-switch-default)
+      a.pull-left(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        i.fa.fa-file
+      //- .pull-right(ng-click="toggle_pause()")
+      //-   i.fa.fa-play
+      a.media-body(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+        |  {{file.name}}

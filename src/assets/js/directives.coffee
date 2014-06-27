@@ -27,6 +27,9 @@ exports.file = () ->
       $scope.isHidden = () ->
         return FilesService.isHidden($scope.file)
 
+      $scope.show = () ->
+        return !$scope.isHidden() && $scope.file.mediatype
+
       $scope.start = () ->
         PlayerService.start($scope.file.path);
   }
@@ -85,5 +88,8 @@ exports.playcontrol = () ->
 
       $scope.toggle_pause = () ->
         PlayerService.toggle_pause();
+
+      $scope.stop = () ->
+        PlayerService.quit();
 
   }

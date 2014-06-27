@@ -2,7 +2,9 @@ navbar
 .container-fluid
   .row
     .col-xs-12.col-lg-12
-      dl.dl-horizontal
+      span(ng-if="!file.path")
+        | load file..
+      dl.dl-horizontal(ng-if="file.path")
         dt Filename
         dd {{file.name}}
         dt Size
@@ -13,8 +15,6 @@ navbar
         dd {{file.mtime | amCalendar}}
         dt Accessed
         dd {{file.atime | amCalendar}}
-        //- dt Path
-        //- dd {{file.path}}
         dt Location
         dd
           a(ng-href="/files?path={{file.dirname}}") {{file.dirname}}
@@ -22,7 +22,7 @@ navbar
         dd {{file.mimetype}}
         dt Extension
         dd {{file.extension}}
-    .col-xs-12.col-lg-12
+    .col-xs-12.col-lg-12(ng-if="file.mediatype == 'video' || file.mediatype == 'audio' || file.subtype == 'octet-stream'")
       button.btn.btn-primary(ng-click="start()")
         i.fa.fa-play
 playcontrol

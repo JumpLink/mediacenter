@@ -12,7 +12,7 @@ navbar
             .media-body
               h2.media-heading {{device}}
       ul.media-list
-        li.media(ng-repeat="device in devices")
+        li.media
           a(ng-href="/files?path={{home.dirname}}")
             .pull-left(href='#')
               i.fa.fa-home(style="font-size: 40px; padding-right:10px;")

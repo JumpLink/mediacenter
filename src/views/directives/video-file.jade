@@ -1,6 +1,15 @@
-a(ng-href="/info{{getPathQueryString()}}")
-  i.fa.fa-file-video-o
-  span(ng-switch on="file.metadata.type")
+//- a(ng-href="/info{{getPathQueryString()}}")
+//-   i.fa.fa-file-video-o
+//-   span(ng-switch on="file.metadata.type")
+//-     span(ng-switch-when="episode")  {{file.metadata.tvShow.name}} - {{file.metadata.episode.name}}
+//-       small  Season {{file.metadata.episode.season | number}} Episode {{file.metadata.episode.number| number}} 
+//-     span(ng-switch-default)  {{file.name}}
+div
+  a.pull-left(ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
+    i.fa.fa-file-video-o
+  //- .pull-right(ng-click="toggle_pause()")
+  //-   i.fa-file-video-o
+  a.media-body(ng-switch on="file.metadata.type", ng-href="/info{{getPathQueryString()}}", title="{{file.name}}")
     span(ng-switch-when="episode")  {{file.metadata.tvShow.name}} - {{file.metadata.episode.name}}
       small  Season {{file.metadata.episode.season | number}} Episode {{file.metadata.episode.number| number}} 
     span(ng-switch-default)  {{file.name}}
