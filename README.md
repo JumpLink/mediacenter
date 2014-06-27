@@ -4,11 +4,18 @@ a [Sails](http://sailsjs.org) application
 
 # Install
 
+
 ## Dependencies
 ### Node.js
 * On Ubuntu:
 ```sudo apt-get install nodejs```
 * On Raspbian follow [this instructions](http://blog.blakesimpson.co.uk/read/41-install-node-js-on-debian-wheezy).
+
+### [Bower](http://bower.io/) to install cliend site dependencies
+```sudo npm install -g bower```
+
+### [forever](https://github.com/nodejitsu/forever) to run the mediacenter as daemon
+```sudo npm install forever -g```
 
 ### To hide the mouse
 ```sudo apt-get install unclutter```
@@ -24,7 +31,22 @@ sudo apt-get install ffmpeg
 
 * On Raspberry Pi compile ffmpeg by [following this instructions](http://www.raspberrypi.org/forums/viewtopic.php?f=66&t=90450) (see this [bug](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261)).
 
-## Raspberry Pi
+## Mediacenter
+* Clone this repo and change directory:
+```
+git clone git@github.com:JumpLink/mediacenter.git
+cd mediacenter/src
+```
+* Install server side dependencies:
+```npm install```
+* Install client side dependencies:
+```bower install```
+
+## Try to start the mediacenter
+* Be sure to be in mediacenter/src and run:
+```mediacenter.log mediacenter.js```
+
+## Setup Raspberry Pi with Raspbian (optinal)
 * Install [Raspbian](http://www.raspbian.org/)
 * Set start LXDE on boot
 * Setup WiFi/Ethernet
@@ -35,7 +57,7 @@ sudo apt-get install ffmpeg
 pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 ```
 
-### Autostart
+* Setup autostart
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
 ```
 # show all gui apps on mediacenter
