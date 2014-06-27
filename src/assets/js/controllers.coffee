@@ -171,18 +171,18 @@ exports.ServerController = ($scope, $rootScope, $sails, $http, $location, $log, 
 
 exports.FileInfoController = ($rootScope, $scope, $log, FilesService, $routeParams, PlayerService) ->
   # TODO optimieren erst zum schluss
-  loadFileFromRootScope = angular.isDefined($routeParams.global) == true
-  if loadFileFromRootScope
-    $scope.file = $rootScope.file
-  else
-    path = FilesService.getCurrentPath();
-    FilesService.getFile path, (error, file) ->
-      if error?
-        $log.error(error)
-      else
-        $scope.file = file
-        if file.path != path
-          $log.warn file.path+" != "+path
+  # loadFileFromRootScope = angular.isDefined($routeParams.global) == true
+  # if loadFileFromRootScope
+  #   $scope.file = $rootScope.file
+  # else
+  path = FilesService.getCurrentPath();
+  FilesService.getFile path, {ffprobe: true}, (error, file) ->
+    if error?
+      $log.error(error)
+    else
+      $scope.file = file
+      if file.path != path
+        $log.warn file.path+" != "+path
 
   $scope.start = () ->
     PlayerService.start $scope.file.path, (err) ->

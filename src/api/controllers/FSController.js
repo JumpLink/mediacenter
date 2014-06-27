@@ -51,7 +51,9 @@ module.exports = {
    */
   , detectFile: function (req, res) {
     var filePath = req.param('id') ? req.param('id') : req.param('path') ? req.param('path') : '/';
-    FSService.detectFile(filePath, function (error, file) {
+    var withFfprobe = false;
+    if(req.param('ffprobe') == 'true' || req.param('ffprobe') == true) withFfprobe = true;
+    FSService.detectFile(filePath, {ffprobe: withFfprobe}, function (error, file) {
       if(error != null) return res.serverError(error);
       else return res.json(file);
     });

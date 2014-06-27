@@ -12,7 +12,7 @@ exports.file = () ->
           $log.debug 'file changed: '+newValue.name+' ('+oldValue.name+')'
           if newValue.name != oldValue.name or angular.isUndefined(newValue.path)
             path = FilesService.getAbsolutePath(newValue.name, currentPath);
-            FilesService.getFile path, (error, file) ->
+            FilesService.getFile path, {ffprobe: false}, (error, file) ->
               if error != null
                 $log.warn error
               else

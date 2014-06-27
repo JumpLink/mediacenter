@@ -33,8 +33,24 @@ var getMetaDataJson = function (fileName, dirname, callback) {
     }
   });
 }
+
+exports.ffprobe = function (filePath, callback) {
+  filePath = Path.normalize(filePath);
+  fs.exists(filePath, function (exists) {
+    if(exists) {
+      Ffmpeg.ffprobe(file.path, callback);
+    } else {
+      callback("File not found")
+    }
+  });
+}
     
-exports.detectFile = function(filePath, callback) {
+exports.detectFile = function(filePath, options, callback) {
+  var opt = {
+    ffprobe: false, // load metadata with ffprobe
+  }
+  extend(opt, options);
+
   filePath = Path.normalize(filePath);
   var dirname = Path.dirname(filePath);
   var name = Path.basename(filePath);
@@ -44,6 +60,7 @@ exports.detectFile = function(filePath, callback) {
 
   var magic = new Magic(mmm.MAGIC_MIME_TYPE);
   sails.log.debug ("detectFile "+file.path);
+  sails.log.debug (opt);
 
   fs.exists(file.path, function (exists) {
     if (!exists) return callback('File not found');
@@ -66,20 +83,25 @@ exports.detectFile = function(filePath, callback) {
           extend(file, {mimetype: mime_type, mediatype: types[0], subtype: types[1]});
 
           if(file.mediatype == 'video') {
+            file.metadata = {};
             getMetaDataJson(file.name, file.dirname, function (error, json) {
-              if(!error) file.metadata = json;
+              if(!error) extend(file.metadata, json);
+              if(opt.ffprobe) {
+                Ffmpeg.ffprobe(file.path, function(err, metadata) {
+                  if (err) {
+                    err.note = "Be sure you have ffmpeg installed."
+                    return callback(err);
+                  }
+                  if(typeof file.metadata != 'undefined')
+                    extend(file.metadata, metadata);
+                  else
+                    file.metadata = metadata;
+                  return callback(null, file);
+                });
+              } else {
+                callback(null, file);
+              }
 
-              Ffmpeg.ffprobe(file.path, function(err, metadata) {
-                if (err) {
-                  err.note = "Be sure you have ffmpeg installed."
-                  return callback(err);
-                }
-                if(typeof file.metadata != 'undefined')
-                  extend(file.metadata, metadata);
-                else
-                  file.metadata = metadata;
-                return callback(null, file);
-              });
 
             });
           } else {

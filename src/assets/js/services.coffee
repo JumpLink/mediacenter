@@ -213,9 +213,9 @@ exports.FilesService = ($log, $routeParams, $sails, $http, async, transport) ->
   getPathQueryString = (path) ->
     return '?path=' + path
 
-  getFile = (path, cb) ->
+  getFile = (path, options, cb) ->
 
-    url = "/fs/detectFile"+getPathQueryString(path)
+    url = "/fs/detectFile"+getPathQueryString(path)+"&ffprobe="+options.ffprobe
     # $log.debug url
 
     switch transport
