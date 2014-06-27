@@ -43,7 +43,10 @@ cd mediacenter/src
 ```bower install```
 
 ## Configure
-* Copy the config/local.js.example to config/local.js and modify:
+* Get movie database keys on
+ * TMDb Key: https://www.themoviedb.org/documentation/api
+ * TVDB Key: http://thetvdb.com/?tab=apiregister
+* Copy the config/local.js.example to config/local.js and modify to insert the keys:
 ```
 cp config/local.js.example config/local.js
 [your favourite editor] config/local.js
