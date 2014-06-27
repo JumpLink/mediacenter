@@ -48,9 +48,18 @@ var stopKioskBrowser = function (arch, cb) {
   exec('killall browser_'+arch, cb);
 }
 
+var stopOmxplayer = function (arch, cb) {
+  exec('killall omxplayer.bin', cb);
+}
+
+var stopFfplay = function (arch, cb) {
+  exec('killall ffplay', cb);
+}
+
 var startKioskBrowser = function () {
   if(sails.config.kioskBrowser.start) {
-    setTimeout(function(){
+    setTimeout(function() {
+      sails.log.debug("Start kiosk-browser..")
       getCPUArch(function(error, arch) {
         if (error) return sails.log.error(error);
         else {
@@ -130,6 +139,8 @@ module.exports.bootstrap = function(cb) {
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
 
   printServerDetails();
+  stopOmxplayer();
+  stopFfplay();
   startKioskBrowser();
   maintainNetwork();
 

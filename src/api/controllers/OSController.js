@@ -45,7 +45,7 @@ module.exports = {
 
   , exec: function (req, res) {
     var name = req.param('name');
-    exec(name, function (error, stdout, stderr) {
+    exec(name, {env: {DISPLAY: ':0.0'}}, function (error, stdout, stderr) {
       if(error) sails.log.error(error);
     });
     return res.ok();
