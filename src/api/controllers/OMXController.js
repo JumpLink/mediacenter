@@ -129,8 +129,11 @@ module.exports = {
   , toggle_pause: function (req, res) {
     sails.log.debug("OMXController.toggle_pause");
     PlayerService.info(function (player) {
-      if(player.status === 'play') omx.pause();
-      if(player.status === 'pause') omx.resume();
+      if(player.status === 'play') {
+        omx.pause();
+      } else if(player.status === 'pause') {
+        omx.resume();
+      }
       return res.ok();
     });
   }
