@@ -95,8 +95,9 @@ var onResume = function () {
 }
 
 var info = function (cb) {
-  sails.log.debug("Player info ");
+  sails.log.debug("Player info");
   updateDuration();
+  sails.log.debug(player);
   return cb(player);
 }
 

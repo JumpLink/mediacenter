@@ -115,113 +115,113 @@ module.exports = {
    * `OMXController.pause()`
    */
   , pause: function (req, res) {
-    sails.log.debug("pause");
+    sails.log.debug("OMXController.pause");
     omx.pause();
     return res.ok();
   }
 
   , resume: function (req, res) {
-    sails.log.debug("resume");
+    sails.log.debug("OMXController.resume");
     omx.resume();
     return res.ok();
   }
 
   , toggle_pause: function (req, res) {
-    sails.log.debug("play");
+    sails.log.debug("OMXController.toggle_pause");
     PlayerService.info(function (player) {
-      if(player.status != 'pause') omx.pause();
-      if(player.status != 'play') omx.resume();
+      if(player.status === 'play') omx.pause();
+      if(player.status !== 'pause') omx.resume();
       return res.ok();
     });
   }
 
   , play: function (req, res) {
-    sails.log.debug("play");
+    sails.log.debug("OMXController.play");
     omx.play();
     return res.ok();
   }
 
   , volume_up: function (req, res) {
-    sails.log.debug("volume_up");
+    sails.log.debug("OMXController.volume_up");
     omx.volume_up();
     return res.ok();
   }
 
   , volume_down: function (req, res) {
-    sails.log.debug("volume_down");
+    sails.log.debug("OMXController.volume_down");
     omx.volume_down();
     return res.ok();
   }
 
   , quit: function (req, res) {
-    sails.log.debug("quit");
+    sails.log.debug("OMXController.quit");
     omx.quit();
     return res.ok();
   }
 
   // Alias
   , stop: function (req, res) {
-    sails.log.debug("stop");
+    sails.log.debug("OMXController.stop");
     omx.stop();
     return res.ok();
   }
 
   , forward: function (req, res) {
-    sails.log.debug("forward");
+    sails.log.debug("OMXController.forward");
     omx.forward();
     return res.ok();
   }
 
   , backward: function (req, res) {
-    sails.log.debug("backward");
+    sails.log.debug("OMXController.backward");
     omx.backward();
     return res.ok();
   }
 
   , next_subtitle: function (req, res) {
-    sails.log.debug("next_subtitle");
+    sails.log.debug("OMXController.next_subtitle");
     omx.next_subtitle();
     return res.ok();
   }
 
   , previous_subtitle: function (req, res) {
-    sails.log.debug("previous_subtitle");
+    sails.log.debug("OMXController.previous_subtitle");
     omx.previous_subtitle();
     return res.ok();
   }
 
   , next_chapter: function (req, res) {
-    sails.log.debug("next_chapter");
+    sails.log.debug("OMXController.next_chapter");
     omx.next_chapter();
     return res.ok();
   }
 
   , previous_chapter: function (req, res) {
-    sails.log.debug("previous_chapter");
+    sails.log.debug("OMXController.previous_chapter");
     omx.previous_chapter();
     return res.ok();
   }
 
   , next_audio: function (req, res) {
-    sails.log.debug("next_audio");
+    sails.log.debug("OMXController.next_audio");
     omx.next_audio();
     return res.ok();
   }
 
   , previous_audio: function (req, res) {
-    sails.log.debug("previous_audio");
+    sails.log.debug("OMXController.previous_audio");
     omx.previous_audio();
     return res.ok();
   }
 
   , increase_speed: function (req, res) {
-    sails.log.debug("increase_speed");
+    sails.log.debug("OMXController.increase_speed");
     omx.increase_speed();
     return res.ok();
   }
 
   , decrease_speed: function (req, res) {
-    sails.log.debug("decrease_speed");
+    sails.log.debug("OMXController.decrease_speed");
     omx.decrease_speed();
     return res.ok();
   }
