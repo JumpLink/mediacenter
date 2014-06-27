@@ -62,13 +62,13 @@ module.exports = {
   // start a browser in kiosk mode
   kioskBrowser : {
     start: true,
-    timeout: 50000
+    timeout: 50000 // milisecons before start the browser
   },
   
   // print server details
   printServerDetails : {
     start: true,
-    timeout: 10000
+    timeout: 10000 // milisecons before print the details like ip address and qr-code
   },
 
 
