@@ -24,6 +24,8 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 ### Autostart
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
 ```
+# show all gui apps on mediacenter
+export DISPLAY=:0.0
 #@lxpanel --profile LXDE
 # we need pcmanfm for automount devices
 @pcmanfm --desktop --profile LXDE
@@ -34,7 +36,7 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 @xset -dpms
 # turn off blanking
 @xset s noblank
-# hide the mouse
+# hide the mouse if unused
 @unclutter
 # remove old logs
 @forever cleanlogs
