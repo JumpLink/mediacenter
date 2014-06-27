@@ -28,7 +28,7 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 @xset -dpms
 @xset s noblank
 @unclutter
-@sh -c 'cd /home/pi/mediacenter/src && node app.js'
+@sh -c 'cd /home/pi/mediacenter/src && node app.js' > /dev/null 2>&1
 ```
 
 ## Links
