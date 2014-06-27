@@ -31,7 +31,8 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 @xset -dpms
 @xset s noblank
 @unclutter
-@sh -c 'cd /home/pi/mediacenter/src && forever start -l forever.log -o out.log -e err.log app.js'
+@forever cleanlogs
+@sh -c 'cd /home/pi/mediacenter/src && forever start -l mediacenter.log mediacenter.js'
 ```
 
 ## Links
