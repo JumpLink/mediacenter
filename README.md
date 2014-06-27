@@ -24,14 +24,23 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 ### Autostart
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
 ```
+# show all gui apps on mediacenter
+export DISPLAY=:0.0
 #@lxpanel --profile LXDE
+# we need pcmanfm for automount devices
 @pcmanfm --desktop --profile LXDE
+# turn off the screen saver
 #@xscreensaver -no-splash
 @xset s off
+# disable the power management using dpms to power the monitor down
 @xset -dpms
+# turn off blanking
 @xset s noblank
+# hide the mouse if unused
 @unclutter
+# remove old logs
 @forever cleanlogs
+# start mediacenter
 @sh -c 'cd /home/pi/mediacenter/src && forever start -l mediacenter.log mediacenter.js'
 ```
 
