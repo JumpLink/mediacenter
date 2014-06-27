@@ -101,8 +101,6 @@ exports.detectFile = function(filePath, options, callback) {
               } else {
                 callback(null, file);
               }
-
-
             });
           } else {
             return callback(null, file);

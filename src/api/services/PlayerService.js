@@ -54,7 +54,7 @@ var onStart = function (path) {
 
   sails.log.debug("duration: "+humanizeDuration(player.duration));
 
-  FSService.detectFile(path, function (error, file) {
+  FSService.detectFile(path, {ffprobe:true}, function (error, file) {
     if(error) sails.log.error(error);
     else player.file = file;
     sails.sockets.broadcast('player', 'start', {room: 'player', player: player});
