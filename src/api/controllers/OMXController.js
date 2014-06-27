@@ -6,90 +6,91 @@
  */
 
 var Omx = require('omxcontrol');
-var omx = new Omx();
+var omx = Omx.player;
+var emitter = Omx.emitter;
 var Path = require('path')
 
-omx.on('start', function (filename) {
+emitter.on('start', function (filename) {
   sails.log.debug('omxplayer event: start');
   PlayerService.onStart(filename);
 });
 
-omx.on('pause', function (stream) {
+emitter.on('pause', function (stream) {
   sails.log.debug('omxplayer event: pause');
   PlayerService.onPause();
 });
 
-omx.on('resume', function (stream) {
+emitter.on('resume', function (stream) {
   sails.log.debug('omxplayer event: resume');
   PlayerService.onResume();
 }); 
 
-omx.on('stop', function (stream) {
+emitter.on('stop', function (stream) {
   sails.log.debug('omxplayer event: stop');
   PlayerService.onStop();
 });
 
-omx.on('complete', function (stream) {
+emitter.on('complete', function (stream) {
   sails.log.debug('omxplayer event: complete');
   PlayerService.onStop();
 });
 
-omx.on('volume_up', function (stream) {
+emitter.on('volume_up', function (stream) {
   sails.log.debug('omxplayer event: volume_up');
   PlayerService.onVolumeUp();
 });
 
-omx.on('volume_down', function (stream) {
+emitter.on('volume_down', function (stream) {
   sails.log.debug('omxplayer event: volume_down');
   PlayerService.onVolumeDown();
 });
 
-omx.on('forward', function (stream) {
+emitter.on('forward', function (stream) {
   sails.log.debug('omxplayer event: forward');
   PlayerService.onForward();
 });
 
-omx.on('backward', function (stream) {
+emitter.on('backward', function (stream) {
   sails.log.debug('omxplayer event: backward');
   PlayerService.onBackward();
 });
 
-omx.on('next_subtitle', function (stream) {
+emitter.on('next_subtitle', function (stream) {
   sails.log.debug('omxplayer event: next_subtitle');
   PlayerService.onNextSubtitle();
 });
 
-omx.on('previous_subtitle', function (stream) {
+emitter.on('previous_subtitle', function (stream) {
   sails.log.debug('omxplayer event: previous_subtitle');
   PlayerService.onPreviousSubtitle();
 });
 
-omx.on('next_chapter', function (stream) {
+emitter.on('next_chapter', function (stream) {
   sails.log.debug('omxplayer event: next_chapter');
   PlayerService.onNextChapter();
 });
 
-omx.on('previous_chapter', function (stream) {
+emitter.on('previous_chapter', function (stream) {
   sails.log.debug('omxplayer event: previous_chapter');
   PlayerService.onPreviousChapter();
 });
 
-omx.on('next_audio', function (stream) {
+emitter.on('next_audio', function (stream) {
   sails.log.debug('omxplayer event: next_audio');
   PlayerService.onNextAudio();
 });
 
-omx.on('previous_audio', function (stream) {
+emitter.on('previous_audio', function (stream) {
   sails.log.debug('omxplayer event: previous_audio');
   PlayerService.onPreviousAudio();
 });
 
-omx.on('increase_speed', function (stream) {
+emitter.on('increase_speed', function (stream) {
   sails.log.debug('omxplayer event: increase_speed');
   PlayerService.onIncreaseSpeed();
 });
 
-omx.on('decrease_speed', function (stream) {
+emitter.on('decrease_speed', function (stream) {
   sails.log.debug('omxplayer event: decrease_speed');
   PlayerService.onDecreaseSpeed();
 });
