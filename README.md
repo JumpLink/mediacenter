@@ -35,6 +35,41 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 @sh -c 'cd /home/pi/mediacenter/src && forever start -l mediacenter.log mediacenter.js'
 ```
 
+# Control
+## ssh
+* Restart: ```forever restart -l mediacenter.log mediacenter.js```
+* Stop: ```forever stop mediacenter.js```
+* Start: ```cd /home/pi/mediacenter/src && forever start -l mediacenter.log mediacenter.js```
+* Print logs
+```
+forever logs
+```
+Output:
+```
+info:    Logs for running Forever processes
+data:        script         logfile                    
+data:    [0] mediacenter.js /home/pi/.forever/5X9Z.log
+```
+```
+forever logs 0
+```
+Output:
+```
+data:    mediacenter.js:3601 -    Sails              <|
+data:    mediacenter.js:3601 -    v0.10.0-rc8         |\
+data:    mediacenter.js:3601 -                       /|.\
+data:    mediacenter.js:3601 -                      / || \
+data:    mediacenter.js:3601 -                    ,'  |'  \
+data:    mediacenter.js:3601 -                 .-'.-==|/_--'
+data:    mediacenter.js:3601 -                 `--'-------' 
+data:    mediacenter.js:3601 -    __---___--___---___--___---___--___
+data:    mediacenter.js:3601 -  ____---___--___---___--___---___--___-__
+data:    mediacenter.js:3601 - Server lifted in `/home/pi/mediacenter/src`
+data:    mediacenter.js:3601 - To see your app, visit http://localhost:1337
+data:    mediacenter.js:3601 - To shut down Sails, press <CTRL> + C at any time.
+...
+```
+
 ## Links
 * [Build your own Google TV Using RaspberryPi, NodeJS and Socket.io](http://blog.donaldderek.com/2013/06/build-your-own-google-tv-using-raspberrypi-nodejs-and-socket-io/)
 * [Designing For TV](https://developers.google.com/tv/web/docs/design_for_tv)
