@@ -120,6 +120,21 @@ module.exports = {
     return res.ok();
   }
 
+  , resume: function (req, res) {
+    sails.log.debug("resume");
+    omx.resume();
+    return res.ok();
+  }
+
+  , toggle_pause: function (req, res) {
+    sails.log.debug("play");
+    PlayerService.info(function (player) {
+      if(player.status != 'pause') omx.pause();
+      if(player.status != 'play') omx.resume();
+      return res.ok();
+    });
+  }
+
   , play: function (req, res) {
     sails.log.debug("play");
     omx.play();
@@ -141,6 +156,13 @@ module.exports = {
   , quit: function (req, res) {
     sails.log.debug("quit");
     omx.quit();
+    return res.ok();
+  }
+
+  // Alias
+  , stop: function (req, res) {
+    sails.log.debug("stop");
+    omx.stop();
     return res.ok();
   }
 

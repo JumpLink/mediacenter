@@ -83,7 +83,7 @@ exports.playcontrol = () ->
       # $sails.on 'stop', (message) ->
       #   $log.debug '$sails.on stop in playcontrol directive'
 
-      $scope.toogle_pause = () ->
-        PlayerService.toogle_pause();
+      $scope.toggle_pause = () ->
+        PlayerService.toggle_pause();
 
   }

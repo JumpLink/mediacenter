@@ -336,9 +336,9 @@ exports.OmxPlayerService = ($log, $sails) ->
       .error (response) ->
         cb(response);
 
-  toogle_pause = (cb) ->
-    # $log.debug "/omx/pause
-    $sails.get "/omx/pause"
+  toggle_pause = (cb) ->
+    # $log.debug "/omx/toggle_pause
+    $sails.get "/omx/toggle_pause"
       .success (response) ->
         cb(null);
       .error (response) ->
@@ -458,7 +458,7 @@ exports.OmxPlayerService = ($log, $sails) ->
 
   return {
     start: start
-    toogle_pause: toogle_pause
+    toggle_pause: toggle_pause
     quit: quit
     forward: forward
     backward: backward
@@ -723,11 +723,11 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
     else
       _start path, cb
 
-  toogle_pause = () ->
+  toggle_pause = () ->
     if $rootScope.player.status != 'stop'
       # $log.debug "/ffplay/pause
       if $rootScope.player.program == "omxplayer"
-        OmxPlayerService.toogle_pause (error) ->
+        OmxPlayerService.toggle_pause (error) ->
       else if $rootScope.player.program == "ffplay"
         FfplayPlayerService.toggle_pause (error) ->
       else
@@ -784,7 +784,7 @@ exports.PlayerService = ($rootScope, $sails, $http, $log, $interval, transport, 
 
   return {
     start: start
-    toogle_pause: toogle_pause
+    toggle_pause: toggle_pause
     quit: quit
     forward: forward
     backward: backward
