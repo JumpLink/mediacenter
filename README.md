@@ -18,10 +18,10 @@ a [Sails](http://sailsjs.org) application
 ### [Forever](https://github.com/nodejitsu/forever) for run the mediacenter as daemon
 ```sudo npm install forever -g```
 
-### Unclutter for hide the mouse
+### [Unclutter](http://manpages.ubuntu.com/manpages/trusty/man1/unclutter.1.html) for hide the mouse if unused
 ```sudo apt-get install unclutter```
 
-### Ffmpeg for media file parsing and fflay to play audio/video files
+### Ffmpeg for media file parsing and fflay for play audio/video files
 * On Ubuntu use [this ppa](https://launchpad.net/~jon-severinsson/+archive/ffmpeg).
 ```
 sudo apt-add-repository ppa:jon-severinsson/ffmpeg
@@ -29,7 +29,7 @@ sudo apt-get update
 sudo apt-get install ffmpeg
 ```
 
-* On Raspberry Pi compile ffmpeg by [following this instructions](http://www.raspberrypi.org/forums/viewtopic.php?f=66&t=90450) (see this [bug](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261)).
+* On Raspian compile ffmpeg by [following this instructions](http://www.raspberrypi.org/forums/viewtopic.php?f=66&t=90450) (see this [bug](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261)).
 
 ## Build the mediacenter itself
 * Clone this repo and change directory:
@@ -41,6 +41,13 @@ cd mediacenter/src
 ```npm install```
 * Install client side dependencies:
 ```bower install```
+
+## Configure
+* Copy the config/local.js.example to config/local.js and modify:
+```
+cp config/local.js.example config/local.js
+[your favourite editor] config/local.js
+```
 
 ## Try to start
 * Be sure to be in mediacenter/src and run:
