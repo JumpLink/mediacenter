@@ -4,8 +4,11 @@ a [Sails](http://sailsjs.org) application
 
 # Install
 
-## Hide mouse
+## Dependencies
+### To hide the mouse
 ```sudo apt-get install unclutter```
+### To run the mediacenter continuously
+```sudo npm install forever -g```
 
 ## Raspberry Pi
 * Install [Raspbian](http://www.raspbian.org/)
@@ -28,7 +31,7 @@ pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
 @xset -dpms
 @xset s noblank
 @unclutter
-@sh -c 'cd /home/pi/mediacenter/src && node app.js' > /dev/null 2>&1
+@sh -c 'cd /home/pi/mediacenter/src && forever start -l forever.log -o out.log -e err.log app.js'
 ```
 
 ## Links
