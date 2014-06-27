@@ -4,9 +4,10 @@ a [Sails](http://sailsjs.org) application
 
 # Install
 
-
 ## Dependencies
+
 ### Node.js
+
 * On Ubuntu:
 ```sudo apt-get install nodejs```
 * On Raspbian follow [this instructions](http://blog.blakesimpson.co.uk/read/41-install-node-js-on-debian-wheezy).
@@ -14,14 +15,13 @@ a [Sails](http://sailsjs.org) application
 ### [Bower](http://bower.io/) to install cliend site dependencies
 ```sudo npm install -g bower```
 
-### [forever](https://github.com/nodejitsu/forever) to run the mediacenter as daemon
+### [Forever](https://github.com/nodejitsu/forever) for run the mediacenter as daemon
 ```sudo npm install forever -g```
 
-### To hide the mouse
+### Unclutter for hide the mouse
 ```sudo apt-get install unclutter```
-### To run the mediacenter continuously
-```sudo npm install forever -g```
-### ffmpeg for media file parsing and fflay to play audio/video files
+
+### Ffmpeg for media file parsing and fflay to play audio/video files
 * On Ubuntu use [this ppa](https://launchpad.net/~jon-severinsson/+archive/ffmpeg).
 ```
 sudo apt-add-repository ppa:jon-severinsson/ffmpeg
@@ -31,7 +31,7 @@ sudo apt-get install ffmpeg
 
 * On Raspberry Pi compile ffmpeg by [following this instructions](http://www.raspberrypi.org/forums/viewtopic.php?f=66&t=90450) (see this [bug](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261)).
 
-## Mediacenter
+## Build the mediacenter itself
 * Clone this repo and change directory:
 ```
 git clone git@github.com:JumpLink/mediacenter.git
@@ -42,9 +42,10 @@ cd mediacenter/src
 * Install client side dependencies:
 ```bower install```
 
-## Try to start the mediacenter
+## Try to start
 * Be sure to be in mediacenter/src and run:
 ```mediacenter.log mediacenter.js```
+* Scan the QR-Code or type the Address in your Browser
 
 ## Setup Raspberry Pi with Raspbian (optinal)
 * Install [Raspbian](http://www.raspbian.org/)
@@ -81,10 +82,9 @@ export DISPLAY=:0.0
 ```
 
 # Control
-## ssh
-* Restart: ```forever restart -l mediacenter.log mediacenter.js```
-* Stop: ```forever stop mediacenter.js```
-* Start: ```cd /home/pi/mediacenter/src && forever start -l mediacenter.log mediacenter.js```
+* Restart mediacenter: ```forever restart -l mediacenter.log mediacenter.js```
+* Stop mediacenter: ```forever stop mediacenter.js```
+* Start mediacenter: ```cd /home/pi/mediacenter/src && forever start -l mediacenter.log mediacenter.js```
 * Print logs
 ```
 forever logs
@@ -93,13 +93,14 @@ Output:
 ```
 info:    Logs for running Forever processes
 data:        script         logfile                    
-data:    [0] mediacenter.js /home/pi/.forever/5X9Z.log
+data:    [0] mediacenter.js /home/pi/.forever/mediacenter.log
 ```
 ```
 forever logs 0
 ```
 Output:
 ```
+[...]
 data:    mediacenter.js:3601 -    Sails              <|
 data:    mediacenter.js:3601 -    v0.10.0-rc8         |\
 data:    mediacenter.js:3601 -                       /|.\
@@ -112,7 +113,7 @@ data:    mediacenter.js:3601 -  ____---___--___---___--___---___--___-__
 data:    mediacenter.js:3601 - Server lifted in `/home/pi/mediacenter/src`
 data:    mediacenter.js:3601 - To see your app, visit http://localhost:1337
 data:    mediacenter.js:3601 - To shut down Sails, press <CTRL> + C at any time.
-...
+[...]
 ```
 
 ## Links
