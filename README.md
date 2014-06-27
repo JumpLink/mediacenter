@@ -54,7 +54,7 @@ cp config/local.js.example config/local.js
 
 ## Try to start
 * Be sure to be in mediacenter/src and run:
-```mediacenter.log mediacenter.js```
+```forever start -l mediacenter.log mediacenter.js```
 * Scan the QR-Code or type the Address in your Browser
 
 ## Setup Raspberry Pi with Raspbian (optinal)
