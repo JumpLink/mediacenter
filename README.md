@@ -5,10 +5,24 @@ a [Sails](http://sailsjs.org) application
 # Install
 
 ## Dependencies
+### Node.js
+* On Ubuntu:
+```sudo apt-get install nodejs```
+* On Raspbian follow [this instructions](http://blog.blakesimpson.co.uk/read/41-install-node-js-on-debian-wheezy).
+
 ### To hide the mouse
 ```sudo apt-get install unclutter```
 ### To run the mediacenter continuously
 ```sudo npm install forever -g```
+### ffmpeg for media file parsing and fflay to play audio/video files
+* On Ubuntu use [this ppa](https://launchpad.net/~jon-severinsson/+archive/ffmpeg).
+```
+sudo apt-add-repository ppa:jon-severinsson/ffmpeg
+sudo apt-get update
+sudo apt-get install ffmpeg
+```
+
+* On Raspberry Pi compile ffmpeg by [following this instructions](http://www.raspberrypi.org/forums/viewtopic.php?f=66&t=90450) (see this [bug](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261)).
 
 ## Raspberry Pi
 * Install [Raspbian](http://www.raspbian.org/)
