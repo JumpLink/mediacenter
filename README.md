@@ -10,7 +10,7 @@ a [Sails](http://sailsjs.org) application
 
 * On Ubuntu:
 ```sudo apt-get install nodejs```
-* On Raspbian follow [this instructions](http://blog.blakesimpson.co.uk/read/41-install-node-js-on-debian-wheezy).
+* On Raspbian follow [this instructions](https://learn.adafruit.com/raspberry-pi-hosting-node-red/setting-up-node-dot-js).
 
 ### [Bower](http://bower.io/) to install cliend site dependencies
 ```sudo npm install -g bower```
