@@ -9,7 +9,7 @@
     "ejs": "~0.8.4",
     "extend": "^1.2.1",
     "ffplaycontrol": "git://github.com/JumpLink/ffplaycontrol",
-    "fluent-ffmpeg": "^1.7.2",
+    "fluent-ffmpeg": "git://github.com/fluent-ffmpeg/node-fluent-ffmpeg#327a6f907e4511251e0803ef5aefef616d81f5c4",
     "grunt": "0.4.2",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-coffee": "~0.10.1",
