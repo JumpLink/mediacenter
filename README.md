@@ -4,6 +4,10 @@ A MediaCenter controlled from your smartphone tested on Ubuntu / Raspbian (Raspb
 
 ![Screenshot](https://raw.githubusercontent.com/JumpLink/mediacenter/master/screenshots.png "Screenshot")
 
+# Technical Background
+
+This project it written in Javascript using [Node.js](http://nodejs.org/) and [Sails.js](http://sailsjs.org/) (a realtime MVC Framework for Node.js). To play media files it is using [OMXPlayer](http://omxplayer.sconde.net/) (on Raspian) or [ffplay](https://www.ffmpeg.org/ffplay.html) (on Ubuntu).
+
 # Install
 
 ## Dependencies
@@ -145,6 +149,7 @@ data:    mediacenter.js:3601 - To shut down Sails, press <CTRL> + C at any time.
 * [Raspberry Pi als Kiosk mit resourcenschonendem Browser und VESA Mount](http://repat.de/2013/03/raspberry-pi-als-kiosk-mit-resourcenschonendem-browser-und-vesa-mount/)
 * [restart networking](http://codeghar.wordpress.com/2011/07/18/debian-running-etcinit-dnetworking-restart-is-deprecated-because-it-may-not-enable-again-some-interfaces/)
 * [Sails.js](http://sailsjs.org)
+* [52 movies APIs](http://www.programmableweb.com/news/52-movies-apis-rovi-rotten-tomatoes-and-internet-video-archive/2013/01/22)
 * Similar Projects
  * [PiR.tv](https://github.com/DonaldDerek/PiR.tv)
  * [angular-rpitv](https://github.com/viperfx/angular-rpitv)
