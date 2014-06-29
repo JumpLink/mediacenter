@@ -6,7 +6,7 @@ Developed as a birthday gift for Benthe :)
 
 ## Dependencies
 
-### Node.js
+### [Node.js](http://nodejs.org/)
 
 * On Ubuntu:
 ```sudo apt-get install nodejs```
@@ -21,7 +21,7 @@ Developed as a birthday gift for Benthe :)
 ### [Unclutter](http://manpages.ubuntu.com/manpages/trusty/man1/unclutter.1.html) for hide the mouse if unused
 ```sudo apt-get install unclutter```
 
-### Ffmpeg for media file parsing and fflay for play audio/video files
+### Ffmpeg for media file parsing and ffplay for play audio/video files
 
 ```
 sudo apt-get install ffmpeg
@@ -45,8 +45,6 @@ sudo apt-get install ttf-ubuntu-font-family
 wget http://de.archive.ubuntu.com/ubuntu/pool/main/u/ubuntu-font-family-sources/ttf-ubuntu-font-family_0.80-0ubuntu6_all.deb
 sudo dpkg -i ttf-ubuntu-font-family_*.deb
 ```
-
-
 
 ## Build the mediacenter itself
 * Clone this repo and change directory:
