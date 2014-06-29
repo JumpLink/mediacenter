@@ -1,6 +1,6 @@
-# mediacenter
+# Benthe's MediaCenter
 
-a [Sails](http://sailsjs.org) application
+Developed as a birthday gift for Benthe :)
 
 # Install
 
@@ -22,14 +22,31 @@ a [Sails](http://sailsjs.org) application
 ```sudo apt-get install unclutter```
 
 ### Ffmpeg for media file parsing and fflay for play audio/video files
-* On Ubuntu use [this ppa](https://launchpad.net/~jon-severinsson/+archive/ffmpeg).
+
+```
+sudo apt-get install ffmpeg
+```
+
+* If you can't find this package on Ubuntu use [this ppa](https://launchpad.net/~jon-severinsson/+archive/ffmpeg):
 ```
 sudo apt-add-repository ppa:jon-severinsson/ffmpeg
 sudo apt-get update
 sudo apt-get install ffmpeg
 ```
 
-* On Raspian compile ffmpeg by [following this instructions](http://www.raspberrypi.org/forums/viewtopic.php?f=66&t=90450) (see this [bug](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261)).
+### [Ubuntu font](http://packages.ubuntu.com/en/trusty/all/ttf-ubuntu-font-family/download)
+
+* On Ubuntu:
+```
+sudo apt-get install ttf-ubuntu-font-family
+```
+* On Raspbian:
+```
+wget http://de.archive.ubuntu.com/ubuntu/pool/main/u/ubuntu-font-family-sources/ttf-ubuntu-font-family_0.80-0ubuntu6_all.deb
+sudo dpkg -i ttf-ubuntu-font-family_*.deb
+```
+
+
 
 ## Build the mediacenter itself
 * Clone this repo and change directory:
@@ -57,17 +74,11 @@ cp config/local.js.example config/local.js
 ```node mediacenter.js```
 * Scan the QR-Code or type the Address in your Browser
 
-## Setup Raspberry Pi with Raspbian (optinal)
+## Setup Raspberry Pi with Raspbian (optional)
 * Install [Raspbian](http://www.raspbian.org/)
 * Set start LXDE on boot
 * Setup WiFi/Ethernet
 * Set pcmanf to automount devices and but not show them on mount.
-* Install the [Ubuntu font](http://packages.ubuntu.com/en/trusty/all/ttf-ubuntu-font-family/download)
-* Allow user pi to shutdown and reconnect, use ```sudo visudo``` and add this line:
-```
-pi ALL=NOPASSWD: /sbin/ifdown, /sbin/ifup, /sbin/shutdown
-```
-
 * Setup autostart
 * Modify ```/etc/xdg/lxsession/LXDE/autostart``` to
 ```
@@ -133,11 +144,11 @@ data:    mediacenter.js:3601 - To shut down Sails, press <CTRL> + C at any time.
 * [Boot your Raspberry Pi into a fullscreen browser kiosk](http://blogs.wcode.org/2013/09/howto-boot-your-raspberry-pi-into-a-fullscreen-browser-kiosk/)
 * [Raspberry Pi als Kiosk mit resourcenschonendem Browser und VESA Mount](http://repat.de/2013/03/raspberry-pi-als-kiosk-mit-resourcenschonendem-browser-und-vesa-mount/)
 * [restart networking](http://codeghar.wordpress.com/2011/07/18/debian-running-etcinit-dnetworking-restart-is-deprecated-because-it-may-not-enable-again-some-interfaces/)
+* [Sails.js](http://sailsjs.org)
 * Similar Projects
  * [PiR.tv](https://github.com/DonaldDerek/PiR.tv)
  * [angular-rpitv](https://github.com/viperfx/angular-rpitv)
  * [ludovision](https://github.com/lamberta/ludovision)
 
 ## Bugs
- * https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/261
  * https://github.com/mscdex/mmmagic/issues/24
