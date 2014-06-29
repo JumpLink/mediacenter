@@ -1,6 +1,6 @@
 # Benthe's MediaCenter
 
-Developed as a birthday gift for Benthe :)
+A MediaCenter controlled from your smartphone tested on Ubuntu / Raspbian (Raspberry Pi) and developed as a birthday gift for Benthe ;)
 
 # Install
 
