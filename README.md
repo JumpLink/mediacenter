@@ -2,6 +2,8 @@
 
 A MediaCenter controlled from your smartphone tested on Ubuntu / Raspbian (Raspberry Pi) and developed as a birthday gift for Benthe ;)
 
+![Screenshot](https://raw.githubusercontent.com/JumpLink/mediacenter/master/screenshots.png "Screenshot")
+
 # Install
 
 ## Dependencies
